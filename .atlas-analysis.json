@@ -1,0 +1,97 @@
+{
+  "projectType": "frontend",
+  "projectName": "Luminescent UI",
+  "projectDescription": "A modern Tailwind CSS-based UI library with React and Qwik component implementations featuring interactive elements and custom styling utilities.",
+  "theme": "willow",
+  "primaryColor": "#1db4f4",
+  "lightColor": "#ad83f4",
+  "darkColor": null,
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation"
+            ]
+          },
+          {
+            "group": "Core",
+            "pages": [
+              "core/css-utilities",
+              "core/theme-customization",
+              "core/markdown-formatting"
+            ]
+          },
+          {
+            "group": "Frameworks",
+            "pages": [
+              "frameworks/qwik",
+              "frameworks/react"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Components",
+        "groups": [
+          {
+            "group": "Qwik Components",
+            "pages": [
+              "components/qwik/anchor",
+              "components/qwik/blobs",
+              "components/qwik/color-picker",
+              "components/qwik/dropdown",
+              "components/qwik/nav",
+              "components/qwik/number-input",
+              "components/qwik/range-input",
+              "components/qwik/select-menu",
+              "components/qwik/sidebar",
+              "components/qwik/toggle"
+            ]
+          },
+          {
+            "group": "React Components",
+            "pages": [
+              "components/react/dropdown",
+              "components/react/nav",
+              "components/react/select-menu",
+              "components/react/toggle"
+            ]
+          },
+          {
+            "group": "Logos",
+            "pages": [
+              "components/logos/overview"
+            ]
+          },
+          {
+            "group": "Utilities",
+            "pages": [
+              "components/utilities/hoverable",
+              "components/utilities/classes"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Tailwind CSS-based design system with custom utilities",
+    "Pre-built interactive components for Qwik and React",
+    "Customizable theme with CSS variables",
+    "Built-in markdown formatting styles",
+    "Platform logo components",
+    "Hover effects and animations"
+  ],
+  "publicApiSurface": [
+    "@luminescent/ui - Core CSS utilities and theme",
+    "@luminescent/ui/formatting - Markdown formatting styles",
+    "@luminescent/ui-qwik - Qwik components (Anchor, Blobs, ColorPicker, Dropdown, Nav, NumberInput, RangeInput, SelectMenu, Sidebar, Toggle, Hoverable)",
+    "@luminescent/ui-react - React components (Dropdown, Nav, SelectMenu, Toggle, getClasses)",
+    "Logo components: Birdflop, Discord, Fabric, Forge, Luminescent, Paper, Pterodactyl, Purpur, Velocity, Waterfall"
+  ]
+}
