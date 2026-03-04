@@ -1,0 +1,252 @@
+---
+title: Toggle
+description: A customizable toggle switch component with checkbox and rounded variants
+---
+
+The Toggle component provides a visually appealing alternative to standard checkboxes with smooth animations and multiple style variants.
+
+## Import
+
+```tsx
+import { Toggle } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+<CodeGroup>
+```tsx Basic Toggle
+import { component$, useSignal } from '@builder.io/qwik';
+import { Toggle } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  const enabled = useSignal(false);
+  
+  return (
+    <Toggle
+      id="notifications"
+      checked={enabled.value}
+      onChange$={(e, el) => {
+        enabled.value = el.checked;
+      }}
+    >
+      Enable Notifications
+    </Toggle>
+  );
+});
+```
+
+```tsx Checkbox Style
+<Toggle
+  id="terms"
+  checkbox
+  checked={accepted.value}
+  onChange$={(e, el) => {
+    accepted.value = el.checked;
+  }}
+>
+  I accept the terms and conditions
+</Toggle>
+```
+
+```tsx Rounded Toggle
+<Toggle
+  id="dark-mode"
+  round
+  checked={darkMode.value}
+  onChange$={(e, el) => {
+    darkMode.value = el.checked;
+  }}
+>
+  Dark Mode
+</Toggle>
+```
+</CodeGroup>
+
+## Props
+
+The Toggle component extends standard checkbox input props:
+
+<ParamField path="id" type="string">
+  ID for the input element. Used to associate the label with the toggle.
+</ParamField>
+
+<ParamField path="checkbox" type="boolean" default="false">
+  When true, displays a checkbox-style toggle where the indicator appears/disappears instead of sliding.
+</ParamField>
+
+<ParamField path="round" type="boolean" default="false">
+  When true, uses fully rounded corners (`rounded-full`) for a circular appearance. Default uses slightly rounded corners (`rounded-lum`).
+</ParamField>
+
+<ParamField path="class" type="string">
+  Additional CSS classes for the toggle track element.
+</ParamField>
+
+<ParamField path="children" type="JSXChildren">
+  Label text displayed next to the toggle via the Slot component.
+</ParamField>
+
+## Variants
+
+### Standard Toggle (Default)
+- Width: 48px (`w-12`)
+- The indicator slides from left to right when checked
+- Transform: `peer-checked:after:translate-x-full`
+
+### Checkbox Style
+- Width: 28px (`w-7`) - square shape
+- The indicator fades in/out instead of sliding
+- Opacity: `after:opacity-0 peer-checked:after:opacity-100`
+
+### Rounded Style
+- Uses `rounded-full` for both track and indicator
+- Creates a pill/circular appearance
+- Can be combined with checkbox style
+
+## Styling Details
+
+### Track Element
+```tsx
+{
+  'peer h-7': true,
+  'duration-300 ease-out hover:duration-75': true,
+  'peer-focus:border-blue-500': true,
+  'lum-toggle-bg-lum-input-bg': true, // Unchecked state
+  'peer-checked:lum-toggle-bg-lum-accent': true, // Checked state
+}
+```
+
+### Indicator (::after pseudo-element)
+```tsx
+{
+  'after:absolute after:top-1 after:left-1': true,
+  'after:h-5 after:w-5': true,
+  'after:border': true,
+  'after:duration-300 after:ease-out after:hover:duration-75': true,
+  'after:content-[\'\']': true,
+  'after:motion-safe:transition-transform': true,
+}
+```
+
+## States
+
+### Unchecked
+- Track: `lum-input-bg` color
+- Indicator: Positioned at left (`left-1`)
+- Opacity: Full (standard) or 0 (checkbox style)
+
+### Checked
+- Track: `lum-accent` color
+- Indicator: Slides right (standard) or appears (checkbox style)
+- Border color: Inherits from accent
+
+### Hover
+- Duration changes from 300ms to 75ms for snappy feedback
+
+### Focus
+- Blue border appears: `peer-focus:border-blue-500`
+
+## Accessibility
+
+- Uses native checkbox input: `type="checkbox"`
+- Input hidden with `sr-only` (screen reader only)
+- Label properly associated via `for` attribute
+- Keyboard accessible (Space to toggle)
+- Focus indicator on the track element
+
+## Animation
+
+- Transition property: `transform` (with `motion-safe:` prefix)
+- Duration: 300ms default, 75ms on hover
+- Easing: `ease-out`
+- Respects user's motion preferences
+
+## Example
+
+```tsx
+import { component$, useStore } from '@builder.io/qwik';
+import { Toggle } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  const settings = useStore({
+    notifications: true,
+    darkMode: false,
+    autoSave: true,
+    soundEffects: false,
+  });
+  
+  return (
+    <div class="space-y-4">
+      <div class="rounded-lg border p-4">
+        <h3 class="mb-4 text-lg font-semibold">Preferences</h3>
+        
+        <div class="space-y-3">
+          <Toggle
+            id="notifications"
+            round
+            checked={settings.notifications}
+            onChange$={(e, el) => {
+              settings.notifications = el.checked;
+            }}
+          >
+            Enable Notifications
+          </Toggle>
+          
+          <Toggle
+            id="dark-mode"
+            round
+            checked={settings.darkMode}
+            onChange$={(e, el) => {
+              settings.darkMode = el.checked;
+            }}
+          >
+            Dark Mode
+          </Toggle>
+          
+          <Toggle
+            id="auto-save"
+            checkbox
+            checked={settings.autoSave}
+            onChange$={(e, el) => {
+              settings.autoSave = el.checked;
+            }}
+          >
+            Auto-save changes
+          </Toggle>
+          
+          <Toggle
+            id="sound-effects"
+            checkbox
+            checked={settings.soundEffects}
+            onChange$={(e, el) => {
+              settings.soundEffects = el.checked;
+            }}
+          >
+            Sound Effects
+          </Toggle>
+        </div>
+      </div>
+    </div>
+  );
+});
+```
+
+## Styling with Custom Classes
+
+```tsx
+<Toggle
+  id="custom"
+  class="border-2 border-purple-500"
+  checked={value.value}
+>
+  Custom Border
+</Toggle>
+```
+
+<Note>
+  The component uses Qwik's `peer` utility for styling the visible toggle based on the hidden checkbox's state.
+</Note>
+
+<Note>
+  The `touch-manipulation` CSS property is applied to the container for optimized mobile interactions.
+</Note>

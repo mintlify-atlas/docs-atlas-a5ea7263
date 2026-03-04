@@ -1,0 +1,150 @@
+---
+title: Dropdown
+description: A button component with an animated chevron indicator for dropdown menus
+---
+
+The Dropdown component is a styled button with an integrated chevron icon that rotates to indicate open/closed states. It's designed to be used as a trigger for dropdown menus and collapsible content.
+
+## Import
+
+```tsx
+import { Dropdown } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+<CodeGroup>
+```tsx Basic Usage
+<Dropdown>
+  Select an option
+</Dropdown>
+```
+
+```tsx Controlled State
+import { component$, useSignal } from '@builder.io/qwik';
+
+export default component$(() => {
+  const isOpen = useSignal(false);
+  
+  return (
+    <Dropdown 
+      opened={isOpen.value}
+      onClick$={() => {
+        isOpen.value = !isOpen.value;
+      }}
+    >
+      Menu
+    </Dropdown>
+  );
+});
+```
+
+```tsx Hover Interaction
+<Dropdown hover>
+  Hover me
+</Dropdown>
+```
+</CodeGroup>
+
+## Props
+
+The Dropdown component extends standard button props with these additions:
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for conditional styling.
+  
+  Default classes:
+  - `group`: Enables group-based interactions
+  - `lum-btn`: Base button styling from Luminescent UI
+</ParamField>
+
+<ParamField path="hover" type="boolean" default="false">
+  When true, the chevron rotates on hover instead of requiring the `opened` prop.
+</ParamField>
+
+<ParamField path="opened" type="boolean" default="false">
+  Controls the chevron rotation state. When true, the chevron points up (rotated 180°).
+</ParamField>
+
+## Chevron Behavior
+
+The chevron icon has different rotation behaviors based on props:
+
+### Default (Controlled)
+When `opened` is true, the chevron rotates 180° to point upward.
+
+### Hover Mode
+When `hover` is true:
+- Chevron rotates on mouse hover (300ms duration)
+- Rotates back on hover end (75ms duration)
+- Also responds to focus-within events
+
+### Focus Mode
+Always active - chevron rotates when the button or its descendants receive focus.
+
+## Animation
+
+- Base transition: `ease-out`
+- Respects `motion-safe:` prefix for reduced motion preferences
+- Hover timing: 300ms → 75ms for responsive feel
+- Focus timing: 75ms for immediate feedback
+
+## Layout
+
+- Content area: `flex-1 text-left` (fills available space, left-aligned)
+- Chevron: Fixed 16px size, positioned at the end
+- Button type: `type="button"` (prevents form submission)
+
+## Styling Classes
+
+The chevron applies these classes conditionally:
+
+```tsx
+{
+  'ease-out motion-safe:transition-transform': true,
+  'rotate-180 transform': opened,
+  'duration-300 group-hover:rotate-180 group-hover:transform group-hover:duration-75': hover,
+  'focus-within:rotate-180 focus-within:transform focus-within:duration-75': true,
+}
+```
+
+## Example
+
+```tsx
+import { component$, useSignal } from '@builder.io/qwik';
+import { Dropdown } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  const isOpen = useSignal(false);
+  
+  return (
+    <div class="relative">
+      <Dropdown
+        opened={isOpen.value}
+        class={{ 'w-full': true }}
+        onClick$={() => {
+          isOpen.value = !isOpen.value;
+        }}
+      >
+        Select Language
+      </Dropdown>
+      
+      {isOpen.value && (
+        <div class="absolute mt-2 w-full rounded-lg border bg-white p-2 shadow-lg">
+          <div>English</div>
+          <div>Spanish</div>
+          <div>French</div>
+        </div>
+      )}
+    </div>
+  );
+});
+```
+
+<Note>
+  The Dropdown component uses a `Slot` for content, allowing you to pass any child elements as the button text.
+</Note>
+
+<Note>
+  The chevron icon is imported from `~/svg/ChevronDown` with a fixed size of 16px.
+</Note>

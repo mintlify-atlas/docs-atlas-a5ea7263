@@ -1,0 +1,312 @@
+---
+title: 'Nav'
+description: 'A responsive navigation bar component with mobile menu support'
+icon: 'bars'
+---
+
+## Overview
+
+The Nav component provides a flexible, responsive navigation bar with support for fixed/floating layouts, backdrop blur effects, and an automatic mobile hamburger menu.
+
+## Import
+
+```tsx
+import { Nav } from '@luminescent/ui-react';
+```
+
+## Basic Usage
+
+<CodeGroup>
+```tsx Basic
+import { Nav } from '@luminescent/ui-react';
+
+export function Example() {
+  return (
+    <Nav
+      start={<div>Logo</div>}
+      end={<div>Links</div>}
+    />
+  );
+}
+```
+
+```tsx Three Sections
+import { Nav } from '@luminescent/ui-react';
+
+export function Example() {
+  return (
+    <Nav
+      start={<div>Left Content</div>}
+      center={<div>Center Content</div>}
+      end={<div>Right Content</div>}
+    />
+  );
+}
+```
+
+```tsx With Mobile Menu
+import { Nav } from '@luminescent/ui-react';
+
+export function Example() {
+  return (
+    <Nav
+      start={<div>Logo</div>}
+      end={
+        <div className="hidden sm:flex gap-4">
+          <a href="/">Home</a>
+          <a href="/about">About</a>
+        </div>
+      }
+      mobile={
+        <div className="flex flex-col gap-2">
+          <a href="/">Home</a>
+          <a href="/about">About</a>
+        </div>
+      }
+    />
+  );
+}
+```
+
+```tsx Floating Nav
+import { Nav } from '@luminescent/ui-react';
+
+export function Example() {
+  return (
+    <Nav
+      floating
+      fixed
+      start={<div>Brand</div>}
+      end={<div>Menu</div>}
+    />
+  );
+}
+```
+</CodeGroup>
+
+## Props
+
+<ParamField path="start" type="React.ReactNode">
+  Content to display in the left section of the navigation bar.
+</ParamField>
+
+<ParamField path="center" type="React.ReactNode">
+  Content to display in the center section of the navigation bar.
+</ParamField>
+
+<ParamField path="end" type="React.ReactNode">
+  Content to display in the right section of the navigation bar.
+</ParamField>
+
+<ParamField path="mobile" type="React.ReactNode">
+  Content to display in the mobile dropdown menu (visible on screens smaller than 640px).
+</ParamField>
+
+<ParamField path="fixed" type="boolean" default="false">
+  When true, the navigation bar uses `position: fixed`. Otherwise uses `position: absolute`.
+</ParamField>
+
+<ParamField path="floating" type="boolean" default="false">
+  When true, applies a floating card-style layout with rounded corners and margin.
+</ParamField>
+
+<ParamField path="noblur" type="boolean" default="false">
+  When true, disables the backdrop blur effect.
+</ParamField>
+
+<ParamField path="nohamburger" type="boolean" default="false">
+  When true, hides the hamburger menu button and mobile menu functionality.
+</ParamField>
+
+<ParamField path="nodismiss" type="boolean" default="false">
+  When true, prevents the mobile menu from automatically closing when clicking outside of it.
+</ParamField>
+
+<ParamField path="colorClass" type="string" default="'lum-bg-lum-card-bg'">
+  CSS class to apply for the background color of the navigation bar.
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object of CSS classes to conditionally apply to the nav element.
+</ParamField>
+
+## TypeScript Interface
+
+```tsx
+interface NavProps
+  extends Omit<
+    React.HTMLAttributes<HTMLElement>,
+    'bind:checked' | 'type' | 'children'
+  > {
+  class?: { [key: string]: boolean };
+  fixed?: boolean;
+  floating?: boolean;
+  noblur?: boolean;
+  nohamburger?: boolean;
+  nodismiss?: boolean;
+  start?: React.ReactNode;
+  center?: React.ReactNode;
+  end?: React.ReactNode;
+  mobile?: React.ReactNode;
+  colorClass?: string;
+}
+```
+
+## Layout Sections
+
+The Nav component supports three horizontal sections:
+
+1. **Start**: Left-aligned section (typically for logo/brand)
+2. **Center**: Center-aligned section (typically for primary navigation)
+3. **End**: Right-aligned section (typically for actions/user menu)
+
+Each section:
+- Uses `flex-1` to distribute space evenly
+- Has `gap-2` (8px) between child elements
+- Has `py-2` (8px vertical padding)
+
+## Mobile Menu
+
+### Behavior
+
+- Automatically shown on screens smaller than 640px (sm breakpoint)
+- Triggered by a hamburger icon button
+- Appears below the main navigation bar
+- Automatically closes when clicking outside (unless `nodismiss` is true)
+- Ignores clicks on elements with the `nav-ignore-dismiss` class
+
+### Animation
+
+- Smooth transition with transform and opacity
+- Scale effect (95% to 100%)
+- Margin animation for smooth appearance
+- Becomes pointer-events-none when closed
+
+## Styling Variants
+
+### Fixed vs Absolute
+
+```tsx
+{/* Fixed to top of viewport */}
+<Nav fixed start={<div>Logo</div>} />
+
+{/* Absolute positioning */}
+<Nav start={<div>Logo</div>} />
+```
+
+### Floating Style
+
+```tsx
+{/* Floating card with rounded corners */}
+<Nav floating fixed start={<div>Logo</div>} />
+```
+
+Floating style applies:
+- Rounded corners (`rounded-lum`)
+- Border
+- Margin spacing
+- Max width of 7xl
+
+### Backdrop Blur
+
+```tsx
+{/* With blur effect (default) */}
+<Nav start={<div>Logo</div>} />
+
+{/* Without blur effect */}
+<Nav noblur start={<div>Logo</div>} />
+```
+
+## Accessibility
+
+- Uses semantic `<nav>` element
+- Hamburger button includes `name` and `title` attributes
+- Supports keyboard navigation
+- Proper focus management for mobile menu
+
+## Examples
+
+### Full Navigation Bar
+
+```tsx
+import { Nav } from '@luminescent/ui-react';
+
+export function FullNav() {
+  return (
+    <Nav
+      fixed
+      floating
+      start={
+        <a href="/" className="font-bold text-xl">
+          MyApp
+        </a>
+      }
+      center={
+        <div className="hidden md:flex gap-6">
+          <a href="/features">Features</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/docs">Docs</a>
+        </div>
+      }
+      end={
+        <div className="flex gap-2">
+          <button className="lum-btn">Sign In</button>
+          <button className="lum-btn lum-btn-primary">Sign Up</button>
+        </div>
+      }
+      mobile={
+        <div className="flex flex-col gap-3">
+          <a href="/features" className="lum-btn w-full">Features</a>
+          <a href="/pricing" className="lum-btn w-full">Pricing</a>
+          <a href="/docs" className="lum-btn w-full">Docs</a>
+          <hr className="lum-border" />
+          <button className="lum-btn w-full">Sign In</button>
+          <button className="lum-btn lum-btn-primary w-full">Sign Up</button>
+        </div>
+      }
+    />
+  );
+}
+```
+
+### Preventing Menu Dismiss
+
+```tsx
+import { Nav } from '@luminescent/ui-react';
+
+export function NavWithSelect() {
+  return (
+    <Nav
+      start={<div>Logo</div>}
+      mobile={
+        <div className="flex flex-col gap-2">
+          {/* This select won't close the menu when clicked */}
+          <select className="nav-ignore-dismiss">
+            <option>Option 1</option>
+            <option>Option 2</option>
+          </select>
+        </div>
+      }
+    />
+  );
+}
+```
+
+### Custom Color
+
+```tsx
+import { Nav } from '@luminescent/ui-react';
+
+export function CustomColorNav() {
+  return (
+    <Nav
+      colorClass="bg-gradient-to-r from-blue-500 to-purple-500"
+      start={<div className="text-white">Logo</div>}
+    />
+  );
+}
+```
+
+## Source Reference
+
+Component source: `packages/ui-react/src/components/elements/Nav.tsx`

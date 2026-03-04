@@ -1,0 +1,90 @@
+---
+title: Anchor
+description: A wrapper component that adds a clickable link icon for creating shareable section anchors
+---
+
+The Anchor component wraps content and displays a link icon that allows users to copy the current URL with a hash to their clipboard. Perfect for creating linkable section headings.
+
+## Import
+
+```tsx
+import { Anchor } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+<CodeGroup>
+```tsx Basic Usage
+<Anchor id="my-section">
+  <h2>My Section Title</h2>
+</Anchor>
+```
+
+```tsx Custom Styling
+<Anchor 
+  id="features" 
+  class={{ 'my-4': true, 'text-2xl': true }}
+>
+  <h3>Features</h3>
+</Anchor>
+```
+</CodeGroup>
+
+## Props
+
+The Anchor component extends standard div props with the following customizations:
+
+<ParamField path="id" type="string">
+  Optional ID for the anchor. When provided, a clickable link icon appears that copies the URL with hash to clipboard.
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for conditional styling. Uses Qwik's class object syntax.
+  
+  Default classes include:
+  - `group`: Enables group hover effects
+  - `flex items-center gap-2`: Layout styling
+  - `scroll-mt-32`: Scroll margin for better anchor positioning
+</ParamField>
+
+## Behavior
+
+- The link icon has `opacity-10` by default and animates to `opacity-100` on hover
+- Clicking the link icon copies the full URL with hash anchor to the clipboard
+- The component uses the `group` class to coordinate hover states between children
+- Automatically adds scroll margin for better visual positioning when navigating to anchors
+
+## Features
+
+- **Auto-hiding icon**: Link icon only visible on hover for clean appearance
+- **Clipboard integration**: One-click URL copying with hash anchor
+- **Flexible content**: Accepts any content via Slot
+- **Smooth transitions**: 300ms transition on hover, 75ms on group hover
+- **Accessibility**: Proper semantic HTML with descriptive link behavior
+
+## Example
+
+```tsx
+import { component$ } from '@builder.io/qwik';
+import { Anchor } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  return (
+    <article>
+      <Anchor id="introduction">
+        <h1>Introduction</h1>
+      </Anchor>
+      <p>This section can now be linked directly...</p>
+      
+      <Anchor id="getting-started" class={{ 'mt-8': true }}>
+        <h2>Getting Started</h2>
+      </Anchor>
+      <p>Another linkable section...</p>
+    </article>
+  );
+});
+```
+
+<Note>
+  The link icon component uses an SVG from `~/svg/Link` with a size of 20px.
+</Note>

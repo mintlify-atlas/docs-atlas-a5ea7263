@@ -1,0 +1,438 @@
+---
+title: Markdown Formatting
+description: Pre-styled formatting for Markdown elements using the formatting.css module
+icon: markdown
+---
+
+Luminescent UI provides automatic styling for HTML and Markdown elements through the `formatting.css` module. This is perfect for rendering Markdown content, documentation, or any content-heavy pages.
+
+## Installation
+
+Add the formatting module to your Tailwind CSS file:
+
+```css globals.css
+@import "@luminescent/ui";
+@plugin "@luminescent/ui/lum-bg";
+@import "@luminescent/ui/formatting";
+```
+
+<Note>
+  The formatting styles are applied globally to standard HTML elements. They work automatically with Markdown renderers.
+</Note>
+
+## Styled Elements
+
+### Links
+
+Links are styled with blue colors and underline on hover.
+
+<CodeGroup>
+```css formatting.css
+a {
+  @apply text-blue-400 no-underline hover:text-blue-500 hover:underline;
+}
+
+a.lum-btn, a.lum-card {
+  @apply text-lum-text! hover:no-underline!;
+}
+```
+
+```html Output
+<a href="#">Standard link</a>
+<a href="#" class="lum-btn">Button link (no underline)</a>
+```
+</CodeGroup>
+
+<Accordion title="Why the !important?">
+  The `!important` flag ensures that links with `.lum-btn` or `.lum-card` classes maintain their intended appearance without underlines, even when the base link styles would apply.
+</Accordion>
+
+### Blockquotes
+
+Blockquotes are styled as cards with a left accent border.
+
+<CodeGroup>
+```css formatting.css
+blockquote {
+  @apply lum-card border-l-6 border-l-blue-400 my-4;
+}
+
+blockquote p:first-child {
+  @apply mt-0
+}
+
+blockquote p:last-child {
+  @apply mb-0;
+}
+```
+
+```markdown Example
+> This is a blockquote with automatic card styling
+> and a blue accent border on the left side.
+```
+</CodeGroup>
+
+**Rendered output:**
+
+> This is a blockquote with automatic card styling and a blue accent border on the left side.
+
+### Headings
+
+All heading levels are styled with responsive sizes and consistent spacing.
+
+```css formatting.css
+h1, h2, h3, h4, h5, h6 {
+  @apply relative text-lg sm:text-xl font-semibold scroll-mt-36;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: max(0.7em, 18px);
+  margin-bottom: max(0.7em, 18px);
+}
+
+h1 {
+  @apply text-4xl sm:text-5xl font-extrabold;
+}
+
+h2 {
+  @apply text-3xl sm:text-4xl font-bold;
+}
+
+h3 {
+  @apply text-2xl sm:text-3xl;
+}
+
+h4 {
+  @apply text-xl sm:text-2xl;
+}
+```
+
+<Accordion title="Heading Size Reference">
+  - **h1**: `text-4xl` (2.25rem) → `text-5xl` (3rem) on `sm` breakpoint
+  - **h2**: `text-3xl` (1.875rem) → `text-4xl` (2.25rem) on `sm` breakpoint
+  - **h3**: `text-2xl` (1.5rem) → `text-3xl` (1.875rem) on `sm` breakpoint
+  - **h4**: `text-xl` (1.25rem) → `text-2xl` (1.5rem) on `sm` breakpoint
+  - **h5/h6**: `text-lg` (1.125rem) → `text-xl` (1.25rem) on `sm` breakpoint
+</Accordion>
+
+<Note>
+  The `scroll-mt-36` utility ensures headings have proper scroll margin when used as anchor links, accounting for fixed headers.
+</Note>
+
+### Paragraphs
+
+Paragraphs use secondary text color for better visual hierarchy.
+
+```css formatting.css
+p {
+  @apply text-lum-text-secondary;
+}
+```
+
+### Lists
+
+Both ordered and unordered lists are styled with consistent spacing.
+
+<CodeGroup>
+```css formatting.css
+ul, ol {
+  @apply my-4 ml-10 text-lum-text-secondary list-disc;
+}
+
+ol {
+  @apply list-decimal;
+}
+
+li {
+  @apply my-1 pl-2;
+}
+```
+
+```markdown Example
+- Unordered list item
+- Another item
+  - Nested item
+
+1. Ordered list item
+2. Another item
+```
+</CodeGroup>
+
+### Code
+
+Inline code and code blocks are distinctively styled.
+
+<CodeGroup>
+```css formatting.css
+pre {
+  @apply overflow-auto p-4 lum-card my-2;
+}
+
+pre.shiki {
+  @apply lum-card;
+}
+
+pre code {
+  @apply border-none select-auto bg-transparent;
+}
+
+code {
+  @apply bg-lum-card-bg py-0.5 px-1 rounded-lum select-all 
+         border-b-2 border-b-lum-border/20 break-all sm:break-normal;
+}
+```
+
+```markdown Example
+Inline `code` looks like this.
+
+\`\`\`javascript
+const example = "code block";
+\`\`\`
+```
+</CodeGroup>
+
+**Features:**
+
+- Inline code has a subtle bottom border and card background
+- Code blocks use the `lum-card` styling
+- Compatible with Shiki syntax highlighter
+- Code blocks have `select-auto` for easy copying
+- Inline code has `select-all` for quick selection
+
+<Note>
+  The `break-all` class on mobile (`sm:break-normal` on larger screens) prevents long code snippets from overflowing on narrow screens.
+</Note>
+
+### Tables
+
+Tables are styled with consistent padding and alignment.
+
+<CodeGroup>
+```css formatting.css
+table {
+  @apply my-5;
+}
+
+th, td {
+  @apply p-2 align-top;
+}
+
+th:first-child, td:first-child {
+  @apply pl-0;
+}
+
+th:last-child, td:last-child {
+  @apply pr-0;
+}
+```
+
+```markdown Example
+| Header 1 | Header 2 |
+|----------|----------|
+| Cell 1   | Cell 2   |
+| Cell 3   | Cell 4   |
+```
+</CodeGroup>
+
+<Accordion title="Why align-top?">
+  The `align-top` class ensures that cell content aligns to the top of each cell, which is particularly useful when cells contain varying amounts of content or lists.
+</Accordion>
+
+### Images
+
+Images automatically receive rounded corners.
+
+```css formatting.css
+img {
+  @apply rounded-lum overflow-hidden;
+}
+```
+
+```markdown
+![Alt text](image.jpg)
+```
+
+### Horizontal Rules
+
+Horizontal rules create visual separation.
+
+```css formatting.css
+hr {
+  @apply my-8 border-t-1 border-t-lum-border/20;
+}
+```
+
+```markdown
+Content above
+
+---
+
+Content below
+```
+
+## Complete Example
+
+Here's how all the formatted elements look together:
+
+```markdown
+# Main Title
+
+This is a paragraph with a [link](https://example.com) and some `inline code`.
+
+## Subheading
+
+> This is a blockquote with important information that stands out from the regular content.
+
+### Features
+
+- Feature one
+- Feature two
+- Feature three
+
+```javascript
+const formatted = true;
+console.log("Code blocks look great!");
+```
+
+| Feature | Supported |
+|---------|----------|
+| Links   | Yes      |
+| Code    | Yes      |
+| Tables  | Yes      |
+
+---
+
+Separated content
+```
+
+## Customization
+
+You can override the formatting styles by adding your own CSS after the import:
+
+```css globals.css
+@import "@luminescent/ui/formatting";
+
+/* Custom overrides */
+a {
+  @apply text-purple-400 hover:text-purple-500;
+}
+
+blockquote {
+  @apply border-l-purple-400;
+}
+
+code {
+  @apply bg-purple-950/50;
+}
+```
+
+### Scoped Formatting
+
+If you want formatting only in specific areas, apply a scoping class:
+
+<CodeGroup>
+```css Custom Scope
+.markdown-content a {
+  @apply text-blue-400 no-underline hover:text-blue-500 hover:underline;
+}
+
+.markdown-content blockquote {
+  @apply lum-card border-l-6 border-l-blue-400 my-4;
+}
+
+/* ... other markdown styles */
+```
+
+```html Usage
+<div class="markdown-content">
+  <!-- Your Markdown-rendered content here -->
+</div>
+```
+</CodeGroup>
+
+## Framework Integration
+
+### Next.js with MDX
+
+```javascript next.config.js
+import createMDX from '@next/mdx'
+
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+})
+
+export default withMDX({
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+})
+```
+
+```css globals.css
+@import "@luminescent/ui/formatting";
+```
+
+Now all your `.mdx` files will automatically use Luminescent formatting.
+
+### Markdown-it
+
+```javascript
+import MarkdownIt from 'markdown-it'
+import '@luminescent/ui/formatting.css'
+
+const md = new MarkdownIt()
+const html = md.render('# Hello World')
+// HTML elements will be styled automatically
+```
+
+### Marked
+
+```javascript
+import { marked } from 'marked'
+import '@luminescent/ui/formatting.css'
+
+const html = marked.parse('# Hello World')
+// HTML elements will be styled automatically
+```
+
+## Accessibility
+
+The formatting module includes several accessibility features:
+
+- `scroll-mt-36` on headings for proper anchor link scrolling with fixed headers
+- `select-auto` on code blocks for screen reader compatibility
+- Sufficient color contrast for all text elements
+- Semantic HTML structure is preserved
+
+<Warning>
+  When overriding colors, ensure you maintain WCAG AA contrast ratios (4.5:1 for normal text, 3:1 for large text).
+</Warning>
+
+## Best Practices
+
+<Steps>
+  <Step title="Import formatting globally">
+    Add the formatting import to your main CSS file so all rendered Markdown benefits from the styling.
+  </Step>
+  
+  <Step title="Use with Markdown renderers">
+    The formatting module works best with Markdown-to-HTML renderers like MDX, markdown-it, or Marked.
+  </Step>
+  
+  <Step title="Don't fight the defaults">
+    The styles are designed to work well together. Avoid overriding individual element styles unless necessary.
+  </Step>
+  
+  <Step title="Test responsive behavior">
+    Headings and other elements have responsive sizes. Test on different screen sizes to ensure readability.
+  </Step>
+</Steps>
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="CSS Utilities" icon="paintbrush" href="/core/css-utilities">
+    Learn about the utility classes used in formatting
+  </Card>
+  <Card title="Theme Customization" icon="palette" href="/core/theme-customization">
+    Customize colors and variables used in formatting
+  </Card>
+</CardGroup>

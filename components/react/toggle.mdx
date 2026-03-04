@@ -1,0 +1,401 @@
+---
+title: 'Toggle'
+description: 'A toggle switch component for binary choices'
+icon: 'toggle-on'
+---
+
+## Overview
+
+The Toggle component is a styled switch control for binary on/off states. It supports both traditional toggle switches and checkbox-style toggles, with options for rounded or square styling.
+
+## Import
+
+```tsx
+import { Toggle } from '@luminescent/ui-react';
+```
+
+## Basic Usage
+
+<CodeGroup>
+```tsx Basic
+import { Toggle } from '@luminescent/ui-react';
+
+export function Example() {
+  return (
+    <Toggle id="notifications">
+      Enable notifications
+    </Toggle>
+  );
+}
+```
+
+```tsx Controlled
+import { Toggle } from '@luminescent/ui-react';
+import { useState } from 'react';
+
+export function Example() {
+  const [enabled, setEnabled] = useState(false);
+
+  return (
+    <Toggle 
+      id="feature"
+      checked={enabled}
+      onChange={(e) => setEnabled(e.target.checked)}
+    >
+      Feature enabled: {enabled ? 'Yes' : 'No'}
+    </Toggle>
+  );
+}
+```
+
+```tsx Checkbox Style
+import { Toggle } from '@luminescent/ui-react';
+
+export function Example() {
+  return (
+    <Toggle id="terms" checkbox>
+      I agree to the terms
+    </Toggle>
+  );
+}
+```
+
+```tsx Round Style
+import { Toggle } from '@luminescent/ui-react';
+
+export function Example() {
+  return (
+    <Toggle id="dark-mode" round>
+      Dark mode
+    </Toggle>
+  );
+}
+```
+</CodeGroup>
+
+## Props
+
+The Toggle component extends all standard HTML input attributes (for type="checkbox") and adds:
+
+<ParamField path="children" type="React.ReactNode">
+  Label text to display next to the toggle. The label is interactive and clickable when `id` is provided.
+</ParamField>
+
+<ParamField path="id" type="string">
+  HTML id attribute for the checkbox input. Required for label association.
+</ParamField>
+
+<ParamField path="checkbox" type="boolean" default="false">
+  When true, displays a checkbox-style toggle (checkmark appears/disappears) instead of a sliding toggle.
+</ParamField>
+
+<ParamField path="round" type="boolean" default="false">
+  When true, applies fully rounded corners (circular). Otherwise uses standard Luminescent rounded corners.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the toggle track element.
+</ParamField>
+
+<ParamField path="checked" type="boolean">
+  Controlled checked state of the toggle.
+</ParamField>
+
+<ParamField path="defaultChecked" type="boolean">
+  Default checked state for uncontrolled usage.
+</ParamField>
+
+<ParamField path="onChange" type="(e: React.ChangeEvent<HTMLInputElement>) => void">
+  Callback fired when the toggle state changes.
+</ParamField>
+
+## TypeScript Interface
+
+```tsx
+interface ToggleProps
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement> & { type: 'checkbox' },
+    'bind:checked' | 'type' | 'children'
+  > {
+  children?: React.ReactNode;
+  checkbox?: boolean;
+  round?: boolean;
+}
+```
+
+## Styling Variants
+
+### Toggle Modes
+
+#### Sliding Toggle (Default)
+
+```tsx
+<Toggle id="slide">Sliding toggle</Toggle>
+```
+
+- Width: `w-12` (48px)
+- Indicator slides from left to right: `peer-checked:after:translate-x-full`
+- Always visible indicator
+
+#### Checkbox Toggle
+
+```tsx
+<Toggle id="check" checkbox>Checkbox toggle</Toggle>
+```
+
+- Width: `w-7` (28px) - square aspect ratio
+- Indicator appears/disappears: `after:opacity-0 peer-checked:after:opacity-100`
+- No sliding animation
+
+### Corner Styles
+
+#### Standard Rounded (Default)
+
+```tsx
+<Toggle id="standard">Standard corners</Toggle>
+```
+
+- Track: `rounded-lum`
+- Indicator: `rounded-lum-1`
+
+#### Fully Round
+
+```tsx
+<Toggle id="round" round>Circular toggle</Toggle>
+```
+
+- Track: `rounded-full`
+- Indicator: `rounded-full`
+
+## Toggle Indicator
+
+The toggle indicator (the moving/appearing element) has:
+
+- Size: `h-5 w-5` (20x20px)
+- Position: `absolute top-1 left-1`
+- Border styling
+- Smooth animations with motion-safe prefix
+- Hover-responsive: faster transition on hover (75ms vs 300ms)
+
+## Color Scheme
+
+The component uses Luminescent UI CSS variables:
+
+- **Unchecked**: `lum-toggle-bg-lum-input-bg`
+- **Checked**: `lum-toggle-bg-lum-accent`
+- Automatic theme adaptation
+
+## Animation
+
+### Transition Timing
+
+- **Default**: 300ms ease-out
+- **Hover**: 75ms for instant feedback
+- **Motion reduction**: Respects `prefers-reduced-motion`
+
+### Animated Properties
+
+- Transform (sliding/appearing)
+- Opacity (checkbox mode)
+- Background color (checked state)
+
+## Accessibility
+
+- Uses native `<input type="checkbox">` for proper semantics
+- Checkbox is visually hidden but screen-reader accessible: `sr-only`
+- Associated label with `htmlFor` when `id` is provided
+- Keyboard accessible (Space to toggle)
+- Cursor changes to pointer on hover: `cursor-pointer`
+- Touch-optimized: `touch-manipulation`
+
+## Layout
+
+```tsx
+// Container structure
+<div className="flex touch-manipulation items-center gap-3">
+  <label className="relative inline-flex cursor-pointer items-center">
+    <input type="checkbox" className="peer sr-only" />
+    <div>{/* Visual toggle */}</div>
+  </label>
+  {children && <label>{/* Text label */}</label>}
+</div>
+```
+
+- Gap between toggle and label: `gap-3` (12px)
+- Label auto-hides if children is empty: `empty:hidden`
+- Flex layout for vertical alignment
+
+## Examples
+
+### Form Integration
+
+```tsx
+import { Toggle } from '@luminescent/ui-react';
+import { useState } from 'react';
+
+export function SettingsForm() {
+  const [settings, setSettings] = useState({
+    notifications: true,
+    darkMode: false,
+    autoSave: true
+  });
+
+  return (
+    <form className="space-y-4">
+      <Toggle
+        id="notifications"
+        checked={settings.notifications}
+        onChange={(e) => 
+          setSettings({ ...settings, notifications: e.target.checked })
+        }
+      >
+        Enable notifications
+      </Toggle>
+
+      <Toggle
+        id="dark-mode"
+        round
+        checked={settings.darkMode}
+        onChange={(e) => 
+          setSettings({ ...settings, darkMode: e.target.checked })
+        }
+      >
+        Dark mode
+      </Toggle>
+
+      <Toggle
+        id="auto-save"
+        checked={settings.autoSave}
+        onChange={(e) => 
+          setSettings({ ...settings, autoSave: e.target.checked })
+        }
+      >
+        Auto-save changes
+      </Toggle>
+    </form>
+  );
+}
+```
+
+### Checkbox Agreement
+
+```tsx
+import { Toggle } from '@luminescent/ui-react';
+import { useState } from 'react';
+
+export function Agreement() {
+  const [agreed, setAgreed] = useState(false);
+
+  return (
+    <div>
+      <Toggle
+        id="agreement"
+        checkbox
+        checked={agreed}
+        onChange={(e) => setAgreed(e.target.checked)}
+      >
+        I agree to the terms and conditions
+      </Toggle>
+      
+      <button 
+        disabled={!agreed}
+        className="mt-4 lum-btn lum-btn-primary"
+      >
+        Continue
+      </button>
+    </div>
+  );
+}
+```
+
+### With Custom Styling
+
+```tsx
+import { Toggle } from '@luminescent/ui-react';
+
+export function CustomToggle() {
+  return (
+    <Toggle
+      id="custom"
+      className="!bg-purple-200 peer-checked:!bg-purple-600"
+      round
+    >
+      Custom colored toggle
+    </Toggle>
+  );
+}
+```
+
+### Disabled State
+
+```tsx
+import { Toggle } from '@luminescent/ui-react';
+
+export function DisabledToggle() {
+  return (
+    <>
+      <Toggle id="disabled-off" disabled>
+        Disabled (off)
+      </Toggle>
+      
+      <Toggle id="disabled-on" disabled checked>
+        Disabled (on)
+      </Toggle>
+    </>
+  );
+}
+```
+
+### Without Label
+
+```tsx
+import { Toggle } from '@luminescent/ui-react';
+
+export function UnlabeledToggle() {
+  return (
+    <div className="flex items-center gap-2">
+      <span>Notifications</span>
+      <Toggle id="notifications-toggle" />
+    </div>
+  );
+}
+```
+
+## Uncontrolled Usage
+
+```tsx
+import { Toggle } from '@luminescent/ui-react';
+import { useRef } from 'react';
+
+export function UncontrolledToggle() {
+  const toggleRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = () => {
+    if (toggleRef.current) {
+      console.log('Toggle value:', toggleRef.current.checked);
+    }
+  };
+
+  return (
+    <div>
+      <Toggle id="uncontrolled" defaultChecked>
+        Feature enabled
+      </Toggle>
+      <button onClick={handleSubmit}>Submit</button>
+    </div>
+  );
+}
+```
+
+## Best Practices
+
+1. **Always provide an `id`** for proper label association
+2. **Use `checkbox` mode** for agreements and confirmations
+3. **Use `round` style** for modern, iOS-style toggles
+4. **Provide clear labels** that describe what the toggle controls
+5. **Use controlled components** when you need to react to state changes
+6. **Consider disabled states** for unavailable options
+
+## Source Reference
+
+Component source: `packages/ui-react/src/components/elements/Toggle.tsx`

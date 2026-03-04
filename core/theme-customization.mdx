@@ -1,0 +1,413 @@
+---
+title: Theme Customization
+description: Customize Luminescent UI's appearance using CSS variables and @theme tokens
+icon: palette
+---
+
+Luminescent UI uses CSS variables and the `@theme` directive to provide a flexible theming system. All theme variables are defined in `index.css` and can be overridden to match your brand.
+
+## Theme Variables
+
+### Brand Colors
+
+The Luminescent brand color scale uses OKLCH color space for perceptually uniform brightness.
+
+```css index.css
+@theme {
+  --color-luminescent-50: oklch(97.1% 0.014 379.198);
+  --color-luminescent-100: oklch(94.8% 0.028 306.258);
+  --color-luminescent-200: oklch(89.9% 0.061 307.231);
+  --color-luminescent-300: oklch(82.3% 0.12 310.018);
+  --color-luminescent-400: oklch(71.8% 0.202 313.761);
+  --color-luminescent-500: oklch(0.66 0.241 318.308);
+  --color-luminescent-600: oklch(59.2% 0.249 324.584);
+  --color-luminescent-700: oklch(52.5% 0.223 327.958);
+  --color-luminescent-800: oklch(45.9% 0.187 327.815);
+  --color-luminescent-900: oklch(40.8% 0.153 326.432);
+  --color-luminescent-950: oklch(28.4% 0.109 327.907);
+}
+```
+
+<Note>
+  OKLCH provides better color interpolation and perceptual uniformity compared to RGB or HSL.
+</Note>
+
+### Component Variables
+
+These variables control the behavior and appearance of Luminescent components.
+
+<CodeGroup>
+```css Spacing
+@theme {
+  --lum-btn-p-x: 2;
+  --lum-input-p-x: 1.5;
+}
+```
+
+```css Borders
+@theme {
+  --lum-border-radius: var(--radius-lg);
+  --lum-border-superellipse: 1;
+  --lum-border-mix: 20%;
+}
+```
+
+```css Effects
+@theme {
+  --lum-depth: 0;
+  --lum-gradient-mix: 20%;
+  --lum-gradient-angle: 180deg;
+}
+```
+</CodeGroup>
+
+#### Variable Reference
+
+<AccordionGroup>
+  <Accordion title="--lum-btn-p-x">
+    **Type**: Number  
+    **Default**: `2`
+
+    Horizontal padding multiplier for buttons using `lum-btn-p-*` utilities.
+
+    ```html
+    <button class="lum-btn-p-3" style="--lum-btn-p-x: 3">
+      Extra wide button
+    </button>
+    ```
+  </Accordion>
+
+  <Accordion title="--lum-input-p-x">
+    **Type**: Number  
+    **Default**: `1.5`
+
+    Horizontal padding multiplier for inputs using `lum-input-p-*` utilities.
+
+    ```html
+    <input class="lum-input-p-2" style="--lum-input-p-x: 2" />
+    ```
+  </Accordion>
+
+  <Accordion title="--lum-border-radius">
+    **Type**: CSS Length  
+    **Default**: `var(--radius-lg)`
+
+    Base border radius for all Luminescent components.
+
+    ```html
+    <div class="rounded-lum" style="--lum-border-radius: 1rem">
+      Custom radius
+    </div>
+    ```
+  </Accordion>
+
+  <Accordion title="--lum-border-superellipse">
+    **Type**: Number (0-1)  
+    **Default**: `1`
+
+    Controls the superellipse curve of corners. `0` = circle, `1` = squircle.
+
+    ```html
+    <div class="rounded-lum" style="--lum-border-superellipse: 0.5">
+      Softer corners
+    </div>
+    ```
+  </Accordion>
+
+  <Accordion title="--lum-border-mix">
+    **Type**: Percentage  
+    **Default**: `20%`
+
+    Amount of `--color-lum-border` to mix into automatic borders.
+
+    ```html
+    <div class="lum-bg-blue-500" style="--lum-border-mix: 40%">
+      Stronger border contrast
+    </div>
+    ```
+  </Accordion>
+
+  <Accordion title="--lum-depth">
+    **Type**: Number (0-1)  
+    **Default**: `0`
+
+    Controls depth/3D shadow effect intensity. `0` = flat, `1` = maximum depth.
+
+    ```html
+    <button class="lum-btn" style="--lum-depth: 0.3">
+      Subtle 3D effect
+    </button>
+    ```
+  </Accordion>
+
+  <Accordion title="--lum-gradient-mix">
+    **Type**: Percentage  
+    **Default**: `20%`
+
+    Intensity of gradient mixing in `lum-grad-bg-*` utilities.
+
+    ```html
+    <div class="lum-grad-bg-purple-600" style="--lum-gradient-mix: 50%">
+      Intense gradient
+    </div>
+    ```
+  </Accordion>
+
+  <Accordion title="--lum-gradient-angle">
+    **Type**: CSS Angle  
+    **Default**: `180deg`
+
+    Direction of gradients created by `lum-grad-bg-*`.
+
+    ```html
+    <div class="lum-grad-bg-blue-500" style="--lum-gradient-angle: 45deg">
+      Diagonal gradient
+    </div>
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Semantic Color Variables
+
+These variables define the semantic colors used throughout the UI.
+
+```css index.css
+@theme {
+  --color-lum-border: var(--color-gray-300);
+  --color-lum-gradient: var(--color-gray-950);
+  --color-lum-card-bg: var(--color-gray-900);
+  --color-lum-input-bg: var(--color-gray-800);
+  --color-lum-input-hover-bg: var(--color-gray-700);
+  --color-lum-accent: var(--color-blue-500);
+  --color-lum-text: var(--color-gray-50);
+  --color-lum-text-secondary: var(--color-gray-400);
+}
+```
+
+<CardGroup cols={2}>
+  <Card title="--color-lum-border" icon="border-outer">
+    Default border color for mixed borders
+  </Card>
+  <Card title="--color-lum-gradient" icon="circle-half-stroke">
+    Base color mixed into gradients
+  </Card>
+  <Card title="--color-lum-card-bg" icon="square">
+    Background color for cards
+  </Card>
+  <Card title="--color-lum-input-bg" icon="pen-field">
+    Background color for inputs and buttons
+  </Card>
+  <Card title="--color-lum-input-hover-bg" icon="hand-pointer">
+    Hover background for interactive elements
+  </Card>
+  <Card title="--color-lum-accent" icon="star">
+    Accent color for focus states and highlights
+  </Card>
+  <Card title="--color-lum-text" icon="font">
+    Primary text color
+  </Card>
+  <Card title="--color-lum-text-secondary" icon="text">
+    Secondary text color for paragraphs
+  </Card>
+</CardGroup>
+
+## Customization Examples
+
+### Override Theme Globally
+
+Add your customizations after importing Luminescent UI:
+
+```css globals.css
+@import "@luminescent/ui";
+@plugin "@luminescent/ui/lum-bg";
+
+@theme {
+  /* Use your brand colors */
+  --color-lum-accent: var(--color-purple-500);
+  --color-lum-card-bg: var(--color-slate-900);
+  
+  /* Adjust component behavior */
+  --lum-border-radius: 0.5rem;
+  --lum-btn-p-x: 2.5;
+}
+```
+
+### Component-Level Overrides
+
+Override variables on specific elements:
+
+```html
+<div 
+  class="lum-card"
+  style="
+    --lum-border-radius: 1.5rem;
+    --color-lum-card-bg: var(--color-blue-950);
+  "
+>
+  Custom styled card
+</div>
+```
+
+### Light Theme
+
+Create a light theme by overriding semantic colors:
+
+<CodeGroup>
+```css Light Theme
+@media (prefers-color-scheme: light) {
+  @theme {
+    --color-lum-border: var(--color-gray-300);
+    --color-lum-gradient: var(--color-gray-100);
+    --color-lum-card-bg: var(--color-white);
+    --color-lum-input-bg: var(--color-gray-100);
+    --color-lum-input-hover-bg: var(--color-gray-200);
+    --color-lum-text: var(--color-gray-900);
+    --color-lum-text-secondary: var(--color-gray-600);
+  }
+}
+```
+
+```html Theme Toggle
+<html class="light">
+  <head>
+    <style>
+      .light {
+        --color-lum-card-bg: white;
+        --color-lum-text: var(--color-gray-900);
+        /* ... other overrides */
+      }
+    </style>
+  </head>
+</html>
+```
+</CodeGroup>
+
+### Custom Brand Colors
+
+Define your own color scale:
+
+```css
+@theme {
+  --color-brand-50: oklch(98% 0.01 250);
+  --color-brand-100: oklch(95% 0.02 250);
+  --color-brand-200: oklch(90% 0.04 250);
+  --color-brand-300: oklch(85% 0.08 250);
+  --color-brand-400: oklch(75% 0.12 250);
+  --color-brand-500: oklch(65% 0.16 250);
+  --color-brand-600: oklch(55% 0.14 250);
+  --color-brand-700: oklch(45% 0.12 250);
+  --color-brand-800: oklch(35% 0.10 250);
+  --color-brand-900: oklch(25% 0.08 250);
+  --color-brand-950: oklch(15% 0.06 250);
+}
+```
+
+```html
+<button class="lum-btn lum-bg-brand-500">
+  Brand colored button
+</button>
+```
+
+### Dynamic Theme Switching
+
+Use CSS custom properties with JavaScript:
+
+```javascript
+function setTheme(theme) {
+  const root = document.documentElement;
+  
+  if (theme === 'purple') {
+    root.style.setProperty('--color-lum-accent', 'var(--color-purple-500)');
+    root.style.setProperty('--color-lum-input-bg', 'var(--color-purple-950)');
+  } else if (theme === 'green') {
+    root.style.setProperty('--color-lum-accent', 'var(--color-green-500)');
+    root.style.setProperty('--color-lum-input-bg', 'var(--color-green-950)');
+  }
+}
+```
+
+## Advanced Techniques
+
+### Per-Component Depth
+
+<Accordion title="Create depth variations">
+```html
+<div class="space-y-4">
+  <button class="lum-btn" style="--lum-depth: 0">Flat</button>
+  <button class="lum-btn" style="--lum-depth: 0.2">Subtle</button>
+  <button class="lum-btn" style="--lum-depth: 0.5">Moderate</button>
+  <button class="lum-btn" style="--lum-depth: 1">Maximum</button>
+</div>
+```
+
+Each button will have progressively stronger 3D shadow effects.
+</Accordion>
+
+### Custom Superellipse Curves
+
+<Accordion title="Adjust corner smoothness">
+```html
+<div class="grid grid-cols-3 gap-4">
+  <div class="lum-card" style="--lum-border-superellipse: 0">
+    Circle corners
+  </div>
+  <div class="lum-card" style="--lum-border-superellipse: 0.5">
+    Soft corners
+  </div>
+  <div class="lum-card" style="--lum-border-superellipse: 1">
+    Squircle (default)
+  </div>
+</div>
+```
+</Accordion>
+
+### Color Mix Experimentation
+
+<Accordion title="Border contrast control">
+```html
+<!-- Subtle borders -->
+<div class="lum-bg-blue-500" style="--lum-border-mix: 10%">
+  Low contrast
+</div>
+
+<!-- Strong borders -->
+<div class="lum-bg-blue-500" style="--lum-border-mix: 50%">
+  High contrast
+</div>
+```
+</Accordion>
+
+## Best Practices
+
+<Steps>
+  <Step title="Use semantic variables">
+    Prefer `--color-lum-accent` over hardcoded colors like `--color-blue-500` for theme-aware components.
+  </Step>
+  
+  <Step title="Test with different values">
+    Experiment with `--lum-depth`, `--lum-border-mix`, and other variables to find the right balance for your design.
+  </Step>
+  
+  <Step title="Maintain consistency">
+    When overriding theme variables, apply changes globally rather than per-component to maintain visual consistency.
+  </Step>
+  
+  <Step title="Use OKLCH for custom colors">
+    When creating custom color scales, use OKLCH for perceptually uniform brightness across shades.
+  </Step>
+</Steps>
+
+<Warning>
+  Avoid overriding internal variables like `--bg-color` or `--border-color` as these are computed by utilities. Instead, customize the source variables they depend on.
+</Warning>
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="CSS Utilities" icon="paintbrush" href="/core/css-utilities">
+    Learn about the utilities that use these variables
+  </Card>
+  <Card title="Installation" icon="download" href="/installation">
+    Set up your project to use Luminescent UI
+  </Card>
+</CardGroup>

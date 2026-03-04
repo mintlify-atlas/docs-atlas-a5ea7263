@@ -1,0 +1,102 @@
+---
+title: Introduction
+description: A modern Tailwind CSS-based UI library with framework-specific components for Qwik and React
+---
+
+# Welcome to Luminescent UI
+
+Luminescent UI is a comprehensive Tailwind CSS-based UI library that provides beautiful, pre-styled components and utilities for your web applications. Built with modern web standards, it offers both CSS utilities and framework-specific components.
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Tailwind CSS Foundation" icon="paintbrush">
+    Built on top of Tailwind CSS v4, providing a solid foundation with custom utilities and plugins
+  </Card>
+  <Card title="Framework Support" icon="code">
+    Dedicated packages for Qwik and React with native component implementations
+  </Card>
+  <Card title="Markdown Formatting" icon="file-text">
+    Optional formatting styles for markdown elements, perfect for content-heavy applications
+  </Card>
+  <Card title="Modern Tooling" icon="wrench">
+    Designed for modern build tools and workflows with pnpm as the package manager
+  </Card>
+</CardGroup>
+
+## Package Overview
+
+Luminescent UI is distributed as a monorepo with three main packages:
+
+### @luminescent/ui
+
+The core package containing Tailwind CSS utilities, custom plugins, and base styles. This is required for all Luminescent UI projects.
+
+<Note>
+  Version: 6.7.0 | License: AGPL-3.0-or-later
+</Note>
+
+### @luminescent/ui-qwik
+
+Qwik-specific components built on top of the core UI library. Includes optimized components for the Qwik framework with full TypeScript support.
+
+<Note>
+  Version: 6.6.3 | Requires: @luminescent/ui
+</Note>
+
+### @luminescent/ui-react
+
+React components with Lucide React icons integration. Provides a complete set of UI primitives for React applications.
+
+<Note>
+  Version: 6.6.3 | Requires: @luminescent/ui, React 19+
+</Note>
+
+## Quick Start
+
+Get started with Luminescent UI in minutes:
+
+<Steps>
+  <Step title="Install the core package">
+    ```bash
+    pnpm install @luminescent/ui
+    ```
+  </Step>
+  <Step title="Configure Tailwind CSS">
+    Add the imports to your Tailwind CSS file:
+    ```css
+    @import "@luminescent/ui";
+    @plugin "@luminescent/ui/lum-bg";
+    ```
+  </Step>
+  <Step title="Start using utilities">
+    Use Luminescent UI classes in your components and see the magic happen!
+  </Step>
+</Steps>
+
+## What's Next?
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/installation">
+    Detailed installation guide for all packages
+  </Card>
+  <Card title="Qwik Components" icon="grid" href="/components/qwik/anchor">
+    Browse the Qwik component library
+  </Card>
+  <Card title="Markdown Formatting" icon="file-text" href="/core/markdown-formatting">
+    Learn about built-in markdown styling
+  </Card>
+  <Card title="React Components" icon="cube" href="/components/react/dropdown">
+    Browse the React component library
+  </Card>
+</CardGroup>
+
+## Requirements
+
+- Node.js 23.11.0 or higher
+- pnpm 10.10.0 or higher
+- Tailwind CSS 4.1.18 or compatible version
+
+<Warning>
+  Luminescent UI requires pnpm as the package manager. npm and yarn are not supported.
+</Warning>

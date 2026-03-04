@@ -1,0 +1,213 @@
+---
+title: Color Picker
+description: A fully-featured color picker with HSV gradient, preset colors, and hex input
+---
+
+The ColorPicker component provides an interactive interface for selecting colors using a hue/saturation/value gradient picker, preset color swatches, and a hex input field.
+
+## Import
+
+```tsx
+import { ColorPicker } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+<CodeGroup>
+```tsx Basic Usage
+import { component$, useSignal } from '@builder.io/qwik';
+import { ColorPicker } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  const color = useSignal('#4498DB');
+  
+  return (
+    <ColorPicker
+      value={color.value}
+      onInput$={(newColor) => {
+        color.value = newColor;
+      }}
+    />
+  );
+});
+```
+
+```tsx Custom Presets
+<ColorPicker
+  value={color.value}
+  colors={[
+    '#FF0000',
+    '#00FF00', 
+    '#0000FF',
+    '#FFFF00',
+  ]}
+  onInput$={(newColor) => {
+    console.log('Selected:', newColor);
+  }}
+/>
+```
+
+```tsx Different Layouts
+<ColorPicker
+  value={color.value}
+  preview="top"
+  horizontal={true}
+  showInput={false}
+  onInput$={(newColor) => {
+    color.value = newColor;
+  }}
+/>
+```
+</CodeGroup>
+
+## Props
+
+<ParamField path="value" type="string" default="#000000">
+  The current color value in hex format (e.g., `#FF5733`).
+</ParamField>
+
+<ParamField path="onInput$" type="QRL<(color: string) => void>">
+  Callback function triggered when the color changes. Receives the new hex color string.
+</ParamField>
+
+<ParamField path="colors" type="string[]">
+  Array of preset hex colors to display as quick-select swatches.
+  
+  Default presets:
+  ```tsx
+  [
+    '#FAEDCB', '#C9E4DE', '#C6DEF1', '#DBCDF0', '#F2C6DE',
+    '#FCD05C', '#5FE2C5', '#4498DB', '#9863E7', '#E43A96',
+    '#000000', '#555555', '#AAAAAA', '#FFFFFF'
+  ]
+  ```
+</ParamField>
+
+<ParamField path="preview" type="'left' | 'right' | 'top' | 'bottom' | 'full'" default="left">
+  Position of the color preview relative to the hex input:
+  - `left`: Preview swatch on the left side
+  - `right`: Preview swatch on the right side  
+  - `top`: Preview bar above input
+  - `bottom`: Preview bar below input
+  - `full`: Full background preview with dynamic text color
+</ParamField>
+
+<ParamField path="horizontal" type="boolean" default="false">
+  When true, arranges the color picker controls horizontally instead of vertically.
+</ParamField>
+
+<ParamField path="showInput" type="boolean" default="true">
+  Controls whether the hex input field is displayed.
+</ParamField>
+
+<ParamField path="id" type="string">
+  Optional ID for the color picker container element.
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for the container.
+  
+  Default classes:
+  - `lum-card`: Card styling
+  - `touch-none`: Prevents touch scrolling during interaction
+  - `p-4`: Padding
+</ParamField>
+
+## Features
+
+### Interactive HSV Gradient
+- **Saturation/Value picker**: Drag horizontally for saturation, vertically for value
+- **Hue slider**: Vertical slider for selecting hue (0-360°)
+- Smooth dragging with mouse and touch support
+- Visual indicators show current selection position
+
+### Preset Color Swatches
+- Click any preset to instantly select that color
+- Active color highlighted with accent border
+- Hover effect with brightness increase
+- Randomize button with shuffle icon
+
+### Hex Input Field
+- Direct hex code entry with validation
+- Auto-syncs with gradient picker
+- Multiple preview layouts for different UI needs
+- Dynamic text color in `full` preview mode for readability
+
+### Touch & Mouse Support
+- Works with both mouse drag and touch gestures
+- `preventdefault` on mousedown/touchstart for smooth interaction
+- Global event listeners track movement outside component bounds
+
+## Dimensions
+
+The picker uses fixed dimensions for consistent sizing:
+- Main gradient: 150px × 125px (height × width)
+- Hue slider: 150px × 8px
+- Picker handles: 16px × 16px
+
+## Color Utilities
+
+The component internally uses several color conversion utilities:
+- `hexStringToNumber`: Converts hex strings to numbers
+- `hexNumberToRgb`: Converts hex numbers to RGB objects
+- `rgbToHsv`: Converts RGB to HSV color space
+- `hsvToRgb`: Converts HSV back to RGB
+- `rgbToHex`: Converts RGB to hex strings
+- `getBrightness`: Calculates brightness for text contrast
+
+## Example
+
+```tsx
+import { component$, useSignal } from '@builder.io/qwik';
+import { ColorPicker } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  const backgroundColor = useSignal('#C6DEF1');
+  const textColor = useSignal('#000000');
+  
+  return (
+    <div>
+      <div class="mb-4">
+        <h3>Background Color</h3>
+        <ColorPicker
+          value={backgroundColor.value}
+          preview="full"
+          onInput$={(color) => {
+            backgroundColor.value = color;
+          }}
+        />
+      </div>
+      
+      <div class="mb-4">
+        <h3>Text Color</h3>
+        <ColorPicker
+          value={textColor.value}
+          showInput={false}
+          colors={['#000000', '#FFFFFF', '#FF0000', '#00FF00', '#0000FF']}
+          onInput$={(color) => {
+            textColor.value = color;
+          }}
+        />
+      </div>
+      
+      <div 
+        class="p-8 rounded-lg"
+        style={{
+          backgroundColor: backgroundColor.value,
+          color: textColor.value
+        }}
+      >
+        Preview Text
+      </div>
+    </div>
+  );
+});
+```
+
+<Note>
+  The hex input validates colors using the pattern `/^#[0-9A-F]{6}$/i`. Invalid hex codes are ignored.
+</Note>
+
+<Note>
+  The randomize button generates colors using `Math.random() * 16777215` (0xFFFFFF) for full RGB spectrum coverage.
+</Note>

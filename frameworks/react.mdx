@@ -1,0 +1,199 @@
+---
+title: React Integration
+description: Use Luminescent UI components in your React applications
+---
+
+Luminescent UI provides a collection of React components that integrate seamlessly with your React applications. This guide will help you get started with Luminescent UI in React.
+
+## Installation
+
+Install both the core Luminescent UI package and the React-specific package:
+
+<CodeGroup>
+```bash pnpm
+pnpm install @luminescent/ui @luminescent/ui-react
+```
+
+```bash npm
+npm install @luminescent/ui @luminescent/ui-react
+```
+
+```bash yarn
+yarn add @luminescent/ui @luminescent/ui-react
+```
+</CodeGroup>
+
+## Configuration
+
+<Steps>
+  <Step title="Configure Tailwind CSS">
+    Add the following imports to your main CSS file (e.g., `src/index.css` or `src/App.css`):
+
+    ```css
+    @import "@luminescent/ui";
+    @plugin "@luminescent/ui/lum-bg";
+    ```
+
+    This includes the core Luminescent UI styles and the background plugin.
+  </Step>
+
+  <Step title="Add React-specific configuration">
+    After the core imports, add the React-specific configuration:
+
+    ```css
+    @source "../node_modules/@luminescent/ui-react";
+    ```
+
+    This configures Tailwind to process React components from the package.
+  </Step>
+
+  <Step title="Optional: Add Markdown formatting">
+    If you want to use the default formatting for Markdown elements, add this import:
+
+    ```css
+    @import "@luminescent/ui/formatting";
+    ```
+
+    See the [Markdown Documentation](https://ui.luminescent.dev/docs/markdown) for examples.
+  </Step>
+</Steps>
+
+## Usage
+
+### Importing Components
+
+Import components from `@luminescent/ui-react`:
+
+```tsx
+import { Toggle, SelectMenu, Dropdown, Nav } from '@luminescent/ui-react';
+import { LuminescentLogo, DiscordLogo } from '@luminescent/ui-react';
+```
+
+### Example Component
+
+Here's a simple example using Luminescent UI components in React:
+
+```tsx
+import React, { useState } from 'react';
+import { Toggle, SelectMenu, Nav } from '@luminescent/ui-react';
+
+function App() {
+  const [enabled, setEnabled] = useState(false);
+  const [selected, setSelected] = useState('1');
+
+  return (
+    <div className="lum-bg-linear lum-pad-4xl">
+      <h1>Welcome to Luminescent UI</h1>
+      
+      <Toggle
+        label="Enable feature"
+        checked={enabled}
+        onChange={(checked) => setEnabled(checked)}
+      />
+      
+      <SelectMenu
+        options={[
+          { label: 'Option 1', value: '1' },
+          { label: 'Option 2', value: '2' },
+          { label: 'Option 3', value: '3' },
+        ]}
+        value={selected}
+        onChange={(value) => setSelected(value)}
+      />
+    </div>
+  );
+}
+
+export default App;
+```
+
+## Available Components
+
+<Card title="UI Elements" icon="cube">
+  The React library includes the following interactive components:
+
+  - **Toggle** - Toggle switches for boolean states
+  - **SelectMenu** - Select dropdown menus
+  - **Dropdown** - Dropdown menus with custom content
+  - **Nav** - Navigation components
+</Card>
+
+<Card title="Logo Components" icon="image">
+  Pre-built logo components for popular services:
+
+  - **Birdflop** - Birdflop logo
+  - **Discord** - Discord logo
+  - **Fabric** - Fabric logo
+  - **Forge** - Forge logo
+  - **Luminescent** - Luminescent logo
+  - **Paper** - Paper logo
+  - **Pterodactyl** - Pterodactyl logo
+  - **Purpur** - Purpur logo
+  - **Velocity** - Velocity logo
+  - **Waterfall** - Waterfall logo
+</Card>
+
+<Card title="Utility Functions" icon="code">
+  Helper functions for component styling:
+
+  - **getClasses** - Utility for managing CSS classes
+</Card>
+
+## Using Logo Components
+
+Logo components are pre-styled SVG components that you can easily integrate:
+
+```tsx
+import { LuminescentLogo, DiscordLogo } from '@luminescent/ui-react';
+
+function Header() {
+  return (
+    <div className="flex items-center gap-4">
+      <LuminescentLogo className="w-8 h-8" />
+      <h1>My App</h1>
+      <DiscordLogo className="w-6 h-6" />
+    </div>
+  );
+}
+```
+
+## TypeScript Support
+
+Luminescent UI React components are fully typed with TypeScript. The package includes type definitions out of the box:
+
+```tsx
+import type { ToggleProps, SelectMenuProps } from '@luminescent/ui-react';
+
+interface MyComponentProps {
+  options: SelectMenuProps['options'];
+  onToggle: ToggleProps['onChange'];
+}
+```
+
+## Integration with React 19
+
+Luminescent UI React is built with React 19 and takes advantage of the latest React features. The package includes:
+
+- Full support for React 19's new features
+- Optimized rendering with React's concurrent features
+- Compatibility with React Server Components
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Components" icon="puzzle-piece" href="/components/react/dropdown">
+    Explore all available React components
+  </Card>
+  
+  <Card title="Styling" icon="palette" href="/core/theme-customization">
+    Learn about Luminescent UI styling system
+  </Card>
+  
+  <Card title="Examples" icon="code" href="https://ui.luminescent.dev">
+    View live examples and demos
+  </Card>
+  
+  <Card title="GitHub" icon="github" href="https://github.com/Birdflop/luminescent-ui">
+    View the source code
+  </Card>
+</CardGroup>

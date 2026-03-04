@@ -1,0 +1,228 @@
+---
+title: Nav
+description: A responsive navigation bar with mobile hamburger menu and multiple content slots
+---
+
+The Nav component provides a flexible, responsive navigation bar with support for fixed/floating positioning, backdrop blur, and an automatic mobile menu with hamburger toggle.
+
+## Import
+
+```tsx
+import { Nav } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+<CodeGroup>
+```tsx Basic Usage
+<Nav>
+  <div q:slot="start">
+    <Logo />
+  </div>
+  <div q:slot="center">
+    <NavLinks />
+  </div>
+  <div q:slot="end">
+    <UserMenu />
+  </div>
+  <div q:slot="mobile">
+    <MobileMenu />
+  </div>
+</Nav>
+```
+
+```tsx Fixed with Blur
+<Nav fixed noblur={false}>
+  <div q:slot="start">Brand</div>
+  <div q:slot="end">Menu</div>
+  <div q:slot="mobile">Mobile Menu</div>
+</Nav>
+```
+
+```tsx Floating Style
+<Nav floating>
+  <div q:slot="center">Centered Nav</div>
+</Nav>
+```
+</CodeGroup>
+
+## Props
+
+<ParamField path="fixed" type="boolean" default="false">
+  When true, the nav uses `position: fixed`. Otherwise uses `position: absolute`.
+</ParamField>
+
+<ParamField path="floating" type="boolean" default="false">
+  Creates a floating nav style with rounded corners, border, and margin. Overrides standard full-width layout.
+</ParamField>
+
+<ParamField path="noblur" type="boolean" default="false">
+  When true, disables the backdrop blur effect on the navigation bar.
+</ParamField>
+
+<ParamField path="nohamburger" type="boolean" default="false">
+  When true, hides the hamburger menu button and mobile menu entirely.
+</ParamField>
+
+<ParamField path="nodismiss" type="boolean" default="false">
+  When true, the mobile menu won't automatically close when clicking outside. Useful for custom dismiss logic.
+</ParamField>
+
+<ParamField path="colorClass" type="string" default="lum-bg-lum-card-bg">
+  CSS class for the background color. Applied to both the nav bar and mobile menu.
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for the nav container.
+  
+  Default classes:
+  - `top-0 left-0`: Positioning
+  - `z-50`: High z-index for overlay
+  - `flex w-full flex-col`: Layout
+</ParamField>
+
+## Content Slots
+
+The Nav component uses named slots for flexible content placement:
+
+<ParamField path="start" type="slot">
+  Content aligned to the left side of the navigation bar. Typically used for logos or brand names.
+</ParamField>
+
+<ParamField path="center" type="slot">
+  Content aligned to the center. Perfect for main navigation links.
+</ParamField>
+
+<ParamField path="end" type="slot">
+  Content aligned to the right side. Common for user menus, buttons, or actions.
+</ParamField>
+
+<ParamField path="mobile" type="slot">
+  Content displayed in the mobile dropdown menu (visible only on screens smaller than `sm` breakpoint).
+</ParamField>
+
+## Mobile Menu Behavior
+
+- Automatically appears below `sm` breakpoint
+- Controlled by hamburger button in the `end` slot
+- Animates in/out with opacity and scale transitions
+- Auto-dismisses on outside click (unless `nodismiss` is true)
+- Ignores clicks on elements with `nav-ignore-dismiss` class
+
+### Mobile Menu Animation
+
+**Opened state:**
+```tsx
+'mt-2' // Margin top
+```
+
+**Closed state:**
+```tsx
+'pointer-events-none opacity-0 -mt-2 scale-95'
+```
+
+## Layout Structure
+
+```tsx
+<nav> {/* Top-level container */}
+  <div> {/* Mobile menu dropdown */}
+    <Slot name="mobile" />
+  </div>
+  
+  <div> {/* Nav bar wrapper */}
+    <div> {/* Max-width container */}
+      <div> {/* Start slot - left aligned */}
+        <Slot name="start" />
+      </div>
+      <div> {/* Center slot - centered */}
+        <Slot name="center" />
+      </div>
+      <div> {/* End slot - right aligned + hamburger */}
+        <Slot name="end" />
+        {/* Hamburger button */}
+      </div>
+    </div>
+  </div>
+</nav>
+```
+
+## Styling Details
+
+### Standard Nav
+- Full width with max-width constraint of `7xl`
+- Backdrop blur when `noblur` is false
+- No borders on top/sides when not floating
+
+### Floating Nav
+- Margin: `mx-2 mt-2`
+- Rounded corners: `rounded-lum`
+- Full border on all sides
+- Centered container with backdrop blur
+
+### Mobile Menu
+- Width: `calc(100% - 2rem)` (floating) or `calc(100% - 1rem)` (standard)
+- Horizontal margins: `mx-4` (floating) or `mx-2` (standard)
+- Padding: `px-2 py-4`
+- Gap between items: `gap-2`
+
+## Example
+
+```tsx
+import { component$ } from '@builder.io/qwik';
+import { Nav } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  return (
+    <Nav fixed floating={false} colorClass="bg-white dark:bg-gray-900">
+      {/* Logo and brand */}
+      <div q:slot="start" class="flex items-center gap-2">
+        <img src="/logo.svg" alt="Logo" class="h-8" />
+        <span class="font-bold">Brand</span>
+      </div>
+      
+      {/* Desktop navigation links */}
+      <div q:slot="center" class="hidden sm:flex gap-4">
+        <a href="/features">Features</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/docs">Docs</a>
+      </div>
+      
+      {/* User actions */}
+      <div q:slot="end" class="flex gap-2">
+        <button class="lum-btn">Sign In</button>
+        <button class="lum-btn lum-bg-lum-accent">Sign Up</button>
+      </div>
+      
+      {/* Mobile menu content */}
+      <div q:slot="mobile" class="flex flex-col gap-2">
+        <a href="/features" class="lum-btn w-full">Features</a>
+        <a href="/pricing" class="lum-btn w-full">Pricing</a>
+        <a href="/docs" class="lum-btn w-full">Docs</a>
+      </div>
+    </Nav>
+  );
+});
+```
+
+## Dismiss Behavior
+
+The mobile menu uses a click listener that:
+1. Checks if click is on an element with `nav-ignore-dismiss` class
+2. Traverses up the DOM tree checking parent elements
+3. If found, prevents dismissal
+4. Otherwise, closes the menu and removes the listener
+
+```tsx
+// Example: Prevent dismiss on specific elements
+<div class="nav-ignore-dismiss">
+  <SelectMenu /> {/* Won't close nav when interacting */}
+</div>
+```
+
+<Note>
+  The hamburger button only appears on screens smaller than the `sm` breakpoint (typically 640px).
+</Note>
+
+<Note>
+  The Nav component uses `useTask$` to manage the click-outside-to-dismiss behavior with proper cleanup.
+</Note>

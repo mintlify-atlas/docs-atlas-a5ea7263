@@ -1,0 +1,249 @@
+---
+title: Range Input
+description: A custom-styled range slider with visual feedback and hover tooltip
+---
+
+The RangeInput component provides a visually enhanced range slider with a filled track, custom thumb, and a hover tooltip showing the current value.
+
+## Import
+
+```tsx
+import { RangeInput, RangeInputRaw } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+<CodeGroup>
+```tsx With Label
+import { component$, useSignal } from '@builder.io/qwik';
+import { RangeInput } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  const volume = useSignal(5);
+  
+  return (
+    <RangeInput
+      id="volume"
+      value={volume.value}
+      min={0}
+      max={10}
+      onInput$={(e, el) => {
+        volume.value = parseInt(el.value);
+      }}
+    >
+      Volume: {volume.value}
+    </RangeInput>
+  );
+});
+```
+
+```tsx Without Label
+<RangeInputRaw
+  value={brightness.value}
+  min={0}
+  max={100}
+  onInput$={(e, el) => {
+    brightness.value = parseInt(el.value);
+  }}
+/>
+```
+
+```tsx Custom Range
+<RangeInput
+  id="temperature"
+  value={temp.value}
+  min={-20}
+  max={40}
+  onInput$={(e, el) => {
+    temp.value = parseInt(el.value);
+  }}
+>
+  Temperature (°C)
+</RangeInput>
+```
+</CodeGroup>
+
+## Components
+
+### RangeInput
+
+The standard version with an integrated label above the slider.
+
+<ParamField path="id" type="string" required>
+  Required ID for the input element. Used to associate the label with the input.
+</ParamField>
+
+<ParamField path="children" type="JSXChildren">
+  Label content displayed above the slider via the Slot component.
+</ParamField>
+
+### RangeInputRaw
+
+The raw version without a label wrapper, for custom layouts.
+
+## Props
+
+Both components accept these props:
+
+<ParamField path="value" type="number">
+  The current value of the slider. Defaults to `min` if not provided.
+</ParamField>
+
+<ParamField path="min" type="number" default="0">
+  Minimum value of the range.
+</ParamField>
+
+<ParamField path="max" type="number" default="10">
+  Maximum value of the range.
+</ParamField>
+
+<ParamField path="onInput$" type="QRL<(event: InputEvent, element: HTMLInputElement) => void>">
+  Callback fired when the slider value changes.
+  
+  **Parameters:**
+  - `event`: The input event
+  - `element`: The input element with the new value
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for the container.
+  
+  Default classes include:
+  - `group`: Enables group hover effects
+  - `relative`: For positioning child elements
+  - `flex`: Flexbox layout
+  - `touch-manipulation`: Optimizes touch interactions
+  - `text-lum-text`: Text color
+  - `lum-input p-0`: Input styling with no padding
+</ParamField>
+
+## Visual Features
+
+### Filled Track
+- Dynamically calculates width based on current value
+- Uses accent color: `lum-bg-lum-accent`
+- Smooth color transitions on hover
+- Height: 8px (`h-2`)
+- Rounded corners: `rounded-lum`
+
+### Custom Thumb
+- Circular shape: `rounded-full`
+- Size: 16px × 16px (`w-4 h-4`)
+- Positioned dynamically based on value percentage
+- Uses accent color: `lum-bg-lum-accent`
+- Positioned at `-top-1` (4px above track)
+
+### Hover Tooltip
+- Shows current numeric value
+- Appears above the thumb
+- Opacity transitions: `opacity-0` → `opacity-100` on hover
+- Positioned 24px above thumb (`top-6`)
+- Card-styled background: `lum-bg-lum-card-bg`
+- Rounded corners with padding
+- High z-index (`z-50`) to appear above other content
+
+### Tick Marks
+- Visual indicators between min and max values
+- Count: `max - min - 1` (excludes endpoints)
+- Subtle appearance: `border-l-lum-border/20`
+- Height: 4px (`h-1`)
+- Evenly distributed across width
+- Hidden when range has only two values
+
+## Calculated Values
+
+The component uses computed values for dynamic positioning:
+
+```tsx
+const filledPercentage = ((value - min) / (max - min)) * 100;
+const tickCount = max - min - 1;
+```
+
+## Styling Details
+
+### Container Classes
+```tsx
+{
+  'group relative flex touch-manipulation gap-1': true,
+  'text-lum-text lum-input p-0': true,
+}
+```
+
+### Native Input
+- Type: `range`
+- Absolutely positioned over the custom UI
+- Full opacity: `opacity-0` (invisible but interactive)
+- Cursor: `pointer`
+- Full width and height to capture all interactions
+
+## Example
+
+```tsx
+import { component$, useSignal } from '@builder.io/qwik';
+import { RangeInput } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  const fontSize = useSignal(16);
+  const lineHeight = useSignal(1.5);
+  const letterSpacing = useSignal(0);
+  
+  return (
+    <div class="space-y-6">
+      <RangeInput
+        id="font-size"
+        value={fontSize.value}
+        min={12}
+        max={32}
+        onInput$={(e, el) => {
+          fontSize.value = parseInt(el.value);
+        }}
+      >
+        Font Size: {fontSize.value}px
+      </RangeInput>
+      
+      <RangeInput
+        id="line-height"
+        value={lineHeight.value}
+        min={1}
+        max={3}
+        onInput$={(e, el) => {
+          lineHeight.value = parseFloat(el.value);
+        }}
+      >
+        Line Height: {lineHeight.value}
+      </RangeInput>
+      
+      <RangeInput
+        id="letter-spacing"
+        value={letterSpacing.value}
+        min={-2}
+        max={5}
+        onInput$={(e, el) => {
+          letterSpacing.value = parseInt(el.value);
+        }}
+      >
+        Letter Spacing: {letterSpacing.value}px
+      </RangeInput>
+      
+      <div 
+        class="mt-8 p-4 border rounded-lg"
+        style={{
+          fontSize: `${fontSize.value}px`,
+          lineHeight: lineHeight.value,
+          letterSpacing: `${letterSpacing.value}px`
+        }}
+      >
+        Preview text with custom styling
+      </div>
+    </div>
+  );
+});
+```
+
+<Note>
+  The component uses `useSignal` internally to track the value and `useComputed$` to calculate the filled percentage for reactive updates.
+</Note>
+
+<Note>
+  The thumb is positioned using `calc(percentage% - 0.5rem)` to center it properly over the track regardless of value.
+</Note>

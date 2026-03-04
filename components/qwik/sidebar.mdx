@@ -1,0 +1,219 @@
+---
+title: Sidebar
+description: A sticky sidebar navigation component with title section and collapsible content
+---
+
+The Sidebar component provides a fixed-position navigation sidebar that's hidden on mobile and appears on large screens. It includes a title section and content area for navigation links or other elements.
+
+## Import
+
+```tsx
+import { Sidebar } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+<CodeGroup>
+```tsx Basic Usage
+<Sidebar>
+  <div q:slot="title">
+    <h3>Documentation</h3>
+  </div>
+  <nav>
+    <a href="/docs/intro">Introduction</a>
+    <a href="/docs/install">Installation</a>
+    <a href="/docs/usage">Usage</a>
+  </nav>
+</Sidebar>
+```
+
+```tsx Right-Aligned
+<Sidebar position="right">
+  <div q:slot="title">Table of Contents</div>
+  <ul>
+    <li><a href="#section-1">Section 1</a></li>
+    <li><a href="#section-2">Section 2</a></li>
+  </ul>
+</Sidebar>
+```
+
+```tsx Custom Styling
+<Sidebar class={{ 'bg-gray-50': true, 'dark:bg-gray-900': true }}>
+  <div q:slot="title">Navigation</div>
+  <div>Sidebar content...</div>
+</Sidebar>
+```
+</CodeGroup>
+
+## Props
+
+<ParamField path="position" type="'left' | 'right'" default="left">
+  Controls which side of the screen the sidebar appears on.
+  
+  - `left` or undefined: Left-aligned with right border
+  - `right`: Right-aligned with left border
+</ParamField>
+
+<ParamField path="floating" type="boolean">
+  Note: This prop is accepted but not currently implemented in the component logic.
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for the sidebar container.
+  
+  Default classes:
+  - `hidden lg:flex`: Hidden on mobile, visible on large screens (1024px+)
+  - `sticky`: Sticks to viewport on scroll
+  - `lum-card`: Card styling
+  - `top-0 z-40`: Positioning
+  - `px-6 pb-0 pt-20`: Padding
+  - `rounded-none`: Square corners
+  - `h-dvh`: Full dynamic viewport height
+</ParamField>
+
+## Slots
+
+<ParamField path="title" type="slot">
+  Content displayed in the title section at the top of the sidebar. Typically used for headings or breadcrumbs.
+</ParamField>
+
+<ParamField path="default" type="slot">
+  Main content area for navigation links, menus, or other sidebar content.
+</ParamField>
+
+## Layout Structure
+
+```tsx
+<aside> {/* Sidebar container */}
+  <nav id="docs-sidebar"> {/* Navigation wrapper */}
+    <div> {/* Title section */}
+      <Slot name="title" />
+    </div>
+    
+    <div> {/* Content section */}
+      <Slot /> {/* Default slot */}
+    </div>
+  </nav>
+</aside>
+```
+
+## Styling Details
+
+### Title Section
+```tsx
+{
+  'flex items-center gap-3': true,
+  'pb-3 px-2': true,
+  'border-b border-lum-border/10': true,
+}
+```
+
+### Content Section  
+```tsx
+{
+  'flex flex-col gap-3': true,
+  'my-4': true,
+  'mx-4 lg:mx-0': true, // Horizontal margin on mobile, none on large screens
+}
+```
+
+### Position-Based Borders
+
+**Left position (default):**
+```tsx
+'left-0 border-0 border-r'
+```
+
+**Right position:**
+```tsx
+'right-0 border-0 border-l'
+```
+
+## Responsive Behavior
+
+- **Mobile (below 1024px)**: Sidebar is completely hidden (`hidden`)
+- **Large (1024px and above)**: Sidebar appears as a sticky column (`lg:flex`)
+- Uses `sticky` positioning with `top-0` to stay visible during scroll
+- Full viewport height (`h-dvh`) ensures it spans the entire screen
+
+## Accessibility
+
+- Uses semantic `<aside>` element
+- Contains a `<nav>` with id `docs-sidebar` for easy targeting
+- Title section provides context for screen readers
+
+## Example
+
+```tsx
+import { component$ } from '@builder.io/qwik';
+import { Sidebar } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  const sections = [
+    { title: 'Getting Started', items: ['Introduction', 'Installation', 'Quick Start'] },
+    { title: 'Components', items: ['Buttons', 'Forms', 'Navigation'] },
+    { title: 'API Reference', items: ['Hooks', 'Utilities', 'Types'] },
+  ];
+  
+  return (
+    <div class="flex">
+      <Sidebar>
+        <div q:slot="title" class="flex-1">
+          <h2 class="text-lg font-semibold">Documentation</h2>
+        </div>
+        
+        {sections.map((section) => (
+          <div key={section.title} class="mb-4">
+            <h3 class="mb-2 text-sm font-medium text-gray-500">
+              {section.title}
+            </h3>
+            <ul class="space-y-1">
+              {section.items.map((item) => (
+                <li key={item}>
+                  <a 
+                    href={`#${item.toLowerCase().replace(' ', '-')}`}
+                    class="block rounded px-2 py-1 hover:bg-gray-100"
+                  >
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </Sidebar>
+      
+      <main class="flex-1 p-8">
+        {/* Main content */}
+      </main>
+    </div>
+  );
+});
+```
+
+## Layout Tips
+
+1. **Two-Sidebar Layout**
+   ```tsx
+   <div class="flex">
+     <Sidebar position="left">Left nav</Sidebar>
+     <main class="flex-1">Content</main>
+     <Sidebar position="right">Table of contents</Sidebar>
+   </div>
+   ```
+
+2. **With Custom Width**
+   ```tsx
+   <Sidebar class={{ 'w-64': true }}>...</Sidebar>
+   ```
+
+3. **Scrollable Content**
+   The content area automatically scrolls if it exceeds viewport height due to the nav container being in a flex layout.
+
+<Note>
+  The sidebar uses `h-dvh` (dynamic viewport height) which accounts for mobile browser UI elements like address bars.
+</Note>
+
+<Note>
+  The title section has a subtle bottom border (`border-lum-border/10`) with 10% opacity to visually separate it from the content.
+</Note>

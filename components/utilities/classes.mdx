@@ -1,0 +1,280 @@
+---
+title: getClasses
+description: Utility function for conditional className generation
+icon: 'code'
+---
+
+## Overview
+
+The `getClasses` utility function simplifies conditional className generation by filtering and joining class names based on boolean conditions. It's particularly useful for dynamic styling based on component state or props.
+
+## Installation
+
+<CodeGroup>
+```bash npm
+npm install @luminescent/ui-react
+```
+```bash pnpm
+pnpm install @luminescent/ui-react
+```
+```bash yarn
+yarn add @luminescent/ui-react
+```
+</CodeGroup>
+
+## Source Code
+
+```typescript
+export function getClasses(classes: {
+  [key: string]: boolean | undefined;
+}) {
+  return Object.entries(classes)
+    .filter(([, value]) => value)
+    .map(([key]) => key)
+    .join(' ');
+}
+```
+
+## Usage
+
+Import and use the function to generate conditional class strings:
+
+```tsx
+import { getClasses } from '@luminescent/ui-react';
+
+export function Button({ primary, disabled, large }) {
+  const className = getClasses({
+    'btn': true,
+    'btn-primary': primary,
+    'btn-secondary': !primary,
+    'btn-disabled': disabled,
+    'btn-lg': large,
+  });
+
+  return <button className={className}>Click me</button>;
+}
+```
+
+## How It Works
+
+1. **Input**: Object with class names as keys and boolean conditions as values
+2. **Filter**: Removes entries where the value is `false` or `undefined`
+3. **Map**: Extracts the class name keys
+4. **Join**: Combines all class names into a space-separated string
+
+```typescript
+getClasses({
+  'text-lg': true,
+  'text-blue-500': true,
+  'font-bold': false,
+  'underline': undefined,
+});
+// Returns: "text-lg text-blue-500"
+```
+
+## Examples
+
+### Basic Example
+
+```tsx
+import { getClasses } from '@luminescent/ui-react';
+
+function Alert({ type, dismissible }) {
+  return (
+    <div className={getClasses({
+      'alert': true,
+      'alert-success': type === 'success',
+      'alert-error': type === 'error',
+      'alert-warning': type === 'warning',
+      'alert-dismissible': dismissible,
+    })}>
+      Alert message
+    </div>
+  );
+}
+```
+
+### With State
+
+```tsx
+import { useState } from 'react';
+import { getClasses } from '@luminescent/ui-react';
+
+function Toggle() {
+  const [isOn, setIsOn] = useState(false);
+
+  return (
+    <button
+      onClick={() => setIsOn(!isOn)}
+      className={getClasses({
+        'toggle': true,
+        'toggle-on': isOn,
+        'toggle-off': !isOn,
+        'bg-green-500': isOn,
+        'bg-gray-300': !isOn,
+      })}
+    >
+      {isOn ? 'ON' : 'OFF'}
+    </button>
+  );
+}
+```
+
+### Complex Conditions
+
+```tsx
+import { getClasses } from '@luminescent/ui-react';
+
+function Card({ featured, loading, hasImage, interactive }) {
+  return (
+    <div className={getClasses({
+      'card': true,
+      'card-featured': featured,
+      'card-loading': loading,
+      'card-with-image': hasImage,
+      'card-interactive': interactive && !loading,
+      'shadow-lg': featured && !loading,
+      'opacity-50': loading,
+      'cursor-pointer hover:shadow-xl': interactive && !loading,
+    })}>
+      Card content
+    </div>
+  );
+}
+```
+
+### With Tailwind CSS
+
+```tsx
+import { getClasses } from '@luminescent/ui-react';
+
+function Badge({ variant, size, pill }) {
+  return (
+    <span className={getClasses({
+      'inline-flex items-center font-medium': true,
+      'rounded-full': pill,
+      'rounded': !pill,
+      'px-2 py-1 text-xs': size === 'sm',
+      'px-3 py-1.5 text-sm': size === 'md',
+      'px-4 py-2 text-base': size === 'lg',
+      'bg-blue-100 text-blue-800': variant === 'primary',
+      'bg-green-100 text-green-800': variant === 'success',
+      'bg-red-100 text-red-800': variant === 'error',
+      'bg-gray-100 text-gray-800': variant === 'neutral',
+    })}>
+      Badge
+    </span>
+  );
+}
+```
+
+### Combining with Base Classes
+
+```tsx
+import { getClasses } from '@luminescent/ui-react';
+
+function Input({ error, disabled, className }) {
+  const inputClasses = getClasses({
+    'px-4 py-2 border rounded-lg': true,
+    'border-red-500 focus:ring-red-500': error,
+    'border-gray-300 focus:ring-blue-500': !error,
+    'bg-gray-100 cursor-not-allowed': disabled,
+    'bg-white': !disabled,
+  });
+
+  return (
+    <input
+      className={`${inputClasses} ${className || ''}`}
+      disabled={disabled}
+    />
+  );
+}
+```
+
+## Comparison with Alternatives
+
+### Before (Manual String Concatenation)
+
+```tsx
+function Button({ primary, large, disabled }) {
+  let className = 'btn';
+  if (primary) className += ' btn-primary';
+  if (large) className += ' btn-lg';
+  if (disabled) className += ' btn-disabled';
+  return <button className={className}>Click</button>;
+}
+```
+
+### After (Using getClasses)
+
+```tsx
+function Button({ primary, large, disabled }) {
+  return (
+    <button className={getClasses({
+      'btn': true,
+      'btn-primary': primary,
+      'btn-lg': large,
+      'btn-disabled': disabled,
+    })}>
+      Click
+    </button>
+  );
+}
+```
+
+## TypeScript Support
+
+The function is fully typed:
+
+```typescript
+function getClasses(classes: {
+  [key: string]: boolean | undefined;
+}): string
+```
+
+This provides:
+- Autocomplete for class names in supported editors
+- Type checking for boolean values
+- Clear function signature for documentation
+
+## Performance
+
+The `getClasses` function is lightweight and performant:
+
+- No external dependencies
+- Simple array operations (filter, map, join)
+- Can be used in render methods without performance concerns
+- No memoization needed for typical use cases
+
+## When to Use
+
+Use `getClasses` when:
+- You have multiple conditional classes
+- Class names depend on props or state
+- You want cleaner, more maintainable code
+- Working with utility-first CSS frameworks like Tailwind
+
+Consider alternatives when:
+- You have only 1-2 conditional classes (ternary might be simpler)
+- You need more advanced features like class merging or conflict resolution (consider libraries like `clsx` or `classnames`)
+
+## Related Utilities
+
+For more advanced className manipulation, consider:
+
+- **clsx**: Similar API with better performance for large class lists
+- **classnames**: Popular alternative with slightly different API
+- **tailwind-merge**: Intelligently merges Tailwind CSS classes, resolving conflicts
+
+```bash
+npm install clsx tailwind-merge
+```
+
+```tsx
+import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
+```

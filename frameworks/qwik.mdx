@@ -1,0 +1,183 @@
+---
+title: Qwik Integration
+description: Use Luminescent UI components in your Qwik applications
+---
+
+Luminescent UI provides a comprehensive library of components specifically built for Qwik applications. This guide will help you integrate and use Luminescent UI in your Qwik projects.
+
+## Installation
+
+First, install both the core Luminescent UI package and the Qwik-specific package:
+
+<CodeGroup>
+```bash pnpm
+pnpm install @luminescent/ui @luminescent/ui-qwik
+```
+
+```bash npm
+npm install @luminescent/ui @luminescent/ui-qwik
+```
+
+```bash yarn
+yarn add @luminescent/ui @luminescent/ui-qwik
+```
+</CodeGroup>
+
+## Configuration
+
+<Steps>
+  <Step title="Configure Tailwind CSS">
+    Add the following imports to your main CSS file (e.g., `src/global.css`):
+
+    ```css
+    @import "@luminescent/ui";
+    @plugin "@luminescent/ui/lum-bg";
+    ```
+
+    This includes the core Luminescent UI styles and the background plugin.
+  </Step>
+
+  <Step title="Add Qwik-specific configuration">
+    After the core imports, add the Qwik-specific configuration:
+
+    ```css
+    @config "@luminescent/ui-qwik/config";
+    @source "../node_modules/@luminescent/ui-qwik";
+    ```
+
+    This configures Tailwind to process Qwik components and sets the correct source path.
+  </Step>
+
+  <Step title="Optional: Add Markdown formatting">
+    If you want to use the default formatting for Markdown elements, add this import:
+
+    ```css
+    @import "@luminescent/ui/formatting";
+    ```
+
+    See the [Markdown Documentation](https://ui.luminescent.dev/docs/markdown) for examples.
+  </Step>
+</Steps>
+
+## Usage
+
+### Importing Components
+
+You can import components from `@luminescent/ui-qwik`:
+
+```tsx
+import { LButton, LCard } from '@luminescent/ui-qwik';
+import { Toggle, SelectMenu } from '@luminescent/ui-qwik';
+```
+
+### Example Component
+
+Here's a simple example using Luminescent UI components in a Qwik component:
+
+```tsx
+import { component$ } from '@builder.io/qwik';
+import { LButton, Toggle, SelectMenu } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  return (
+    <div class="lum-bg-linear lum-pad-4xl">
+      <h1>Welcome to Luminescent UI</h1>
+      
+      <LButton onClick$={() => console.log('Clicked!')}>
+        Click Me
+      </LButton>
+      
+      <Toggle 
+        label="Enable feature"
+        checked={true}
+      />
+      
+      <SelectMenu
+        options={[
+          { label: 'Option 1', value: '1' },
+          { label: 'Option 2', value: '2' },
+        ]}
+      />
+    </div>
+  );
+});
+```
+
+## Available Components
+
+<Card title="UI Elements" icon="cube">
+  The Qwik library includes the following interactive components:
+
+  - **Anchor** - Enhanced anchor links with styling
+  - **Blobs** - Animated blob backgrounds
+  - **ColorPicker** - Interactive color picker
+  - **Dropdown** - Dropdown menus
+  - **Nav** - Navigation components
+  - **NumberInput** - Number input with controls
+  - **RangeInput** - Range slider input
+  - **SelectMenu** - Select dropdown menus
+  - **Sidebar** - Sidebar navigation
+  - **Toggle** - Toggle switches
+</Card>
+
+<Card title="Logo Components" icon="image">
+  Pre-built logo components for popular services:
+
+  - **Birdflop** - Birdflop logo
+  - **Discord** - Discord logo
+  - **Fabric** - Fabric logo
+  - **Forge** - Forge logo
+  - **Luminescent** - Luminescent logo
+  - **Paper** - Paper logo
+  - **Pterodactyl** - Pterodactyl logo
+  - **Purpur** - Purpur logo
+  - **Velocity** - Velocity logo
+  - **Waterfall** - Waterfall logo
+</Card>
+
+<Card title="Utility Functions" icon="code">
+  Helper functions for enhanced interactions:
+
+  - **Hoverable** - Add 3D hover effects to elements
+</Card>
+
+## Hoverable Effect
+
+The Qwik library includes a special `Hoverable` utility that adds 3D perspective effects on mouse hover:
+
+```tsx
+import { component$ } from '@builder.io/qwik';
+import { Hoverable } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  return (
+    <div
+      class="lum-card lum-pad-4xl"
+      {...Hoverable}
+    >
+      <h2>Hover over me!</h2>
+      <p>This card will tilt as you move your mouse.</p>
+    </div>
+  );
+});
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Components" icon="puzzle-piece" href="/components/qwik/anchor">
+    Explore all available Qwik components
+  </Card>
+  
+  <Card title="Styling" icon="palette" href="/core/theme-customization">
+    Learn about Luminescent UI styling system
+  </Card>
+  
+  <Card title="Examples" icon="code" href="https://ui.luminescent.dev">
+    View live examples and demos
+  </Card>
+  
+  <Card title="GitHub" icon="github" href="https://github.com/Birdflop/luminescent-ui">
+    View the source code
+  </Card>
+</CardGroup>

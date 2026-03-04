@@ -1,0 +1,288 @@
+---
+title: Select Menu
+description: A custom dropdown select menu with animations, keyboard support, and flexible styling
+---
+
+The SelectMenu component provides a stylized alternative to native select elements with smooth animations, custom rendering, and support for both controlled and hover interactions.
+
+## Import
+
+```tsx
+import { SelectMenu, SelectMenuRaw } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+<CodeGroup>
+```tsx Basic Select
+import { component$, useSignal } from '@builder.io/qwik';
+import { SelectMenu } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  const selected = useSignal('react');
+  
+  return (
+    <SelectMenu
+      id="framework"
+      value={selected.value}
+      values={[
+        { name: 'React', value: 'react' },
+        { name: 'Vue', value: 'vue' },
+        { name: 'Qwik', value: 'qwik' },
+      ]}
+      onChange$={(e, el) => {
+        selected.value = el.value;
+      }}
+    >
+      Framework
+    </SelectMenu>
+  );
+});
+```
+
+```tsx Custom Dropdown Content
+<SelectMenu
+  id="custom"
+  customDropdown
+  values={options}
+>
+  <div q:slot="dropdown">
+    <span>Custom: {selectedOption.value}</span>
+  </div>
+  <div q:slot="extra-buttons">
+    <button class="lum-btn">Clear</button>
+  </div>
+  Select Option
+</SelectMenu>
+```
+
+```tsx Hover Interaction
+<SelectMenuRaw
+  hover
+  align="center"
+  values={[
+    { name: 'Small', value: 'sm' },
+    { name: 'Medium', value: 'md' },
+    { name: 'Large', value: 'lg' },
+  ]}
+/>
+```
+</CodeGroup>
+
+## Components
+
+### SelectMenu
+
+The standard version with an integrated label above the select.
+
+<ParamField path="id" type="string">
+  Optional ID for the dropdown button. Used to associate the label with the control.
+</ParamField>
+
+<ParamField path="children" type="JSXChildren">
+  Label content displayed above the select menu via the Slot component.
+</ParamField>
+
+### SelectMenuRaw
+
+The raw version without a label wrapper, for custom layouts.
+
+## Props
+
+Both components accept these props:
+
+<ParamField path="values" type="Array<{ name: JSXChildren; value: string | number }>">
+  Array of options to display in the dropdown menu.
+  
+  - `name`: Content to display (can be text, elements, or components)
+  - `value`: The value to use when selected
+</ParamField>
+
+<ParamField path="value" type="string | number">
+  Currently selected value. Used to highlight the active option.
+</ParamField>
+
+<ParamField path="customDropdown" type="boolean" default="false">
+  When true, the button displays the custom content from the `dropdown` slot instead of the selected option's name.
+</ParamField>
+
+<ParamField path="hover" type="boolean" default="false">
+  When true, the dropdown opens on hover instead of click.
+</ParamField>
+
+<ParamField path="nocloseonclick" type="boolean" default="false">
+  When true, the dropdown stays open when clicking outside. Useful for custom dismiss logic.
+</ParamField>
+
+<ParamField path="noblur" type="boolean" default="false">
+  When true, disables the backdrop blur effect on the dropdown panel.
+</ParamField>
+
+<ParamField path="align" type="'left' | 'right' | 'center'">
+  Horizontal alignment of the dropdown panel relative to the button.
+  
+  - `left`: Aligns to the left edge
+  - `right`: Aligns to the right edge
+  - `center`: Centers the panel
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for the dropdown button.
+  
+  Default: `{ 'w-full': true }`
+</ParamField>
+
+<ParamField path="panelClass" type="string" default="lum-bg-lum-input-bg">
+  CSS class for the dropdown panel background.
+</ParamField>
+
+<ParamField path="btnClass" type="string" default="lum-bg-transparent">
+  CSS class for the option buttons inside the dropdown.
+</ParamField>
+
+## Slots
+
+<ParamField path="dropdown" type="slot">
+  Custom content for the dropdown button. Only used when `customDropdown={true}`.
+</ParamField>
+
+<ParamField path="extra-buttons" type="slot">
+  Additional buttons or content to display at the bottom of the dropdown panel.
+</ParamField>
+
+## Behavior
+
+### Click Mode (Default)
+1. Click the button to toggle the dropdown
+2. Click an option to select it
+3. Dropdown auto-closes after selection
+4. Click outside to close (unless `nocloseonclick={true}`)
+
+### Hover Mode
+1. Hover over the button to open the dropdown
+2. Dropdown stays open while hovering button or panel
+3. Click an option to select it
+4. Move mouse away to close
+
+### Keyboard Support
+- Focus the button with Tab
+- Dropdown opens on focus-within
+- Navigate options with arrow keys (native behavior)
+- Select with Enter
+
+## Dropdown Animation
+
+**Closed state:**
+```tsx
+'pointer-events-none scale-95 opacity-0'
+```
+
+**Open state (click):**
+Full opacity and scale with pointer events enabled
+
+**Open state (hover):**
+```tsx
+'duration-300 group-hover:pointer-events-auto group-hover:scale-100 group-hover:opacity-100 group-hover:duration-75'
+```
+
+**Focus state:**
+```tsx
+'focus-within:pointer-events-auto focus-within:scale-100 focus-within:opacity-100 focus-within:duration-75'
+```
+
+## Panel Styling
+
+The dropdown panel has these default classes:
+
+```tsx
+{
+  'absolute z-1000 mt-2': true,
+  'backdrop-blur-lg': !noblur,
+  'lum-scroll flex max-h-72 flex-col gap-1': true,
+  'overflow-auto rounded-lum border p-1': true,
+  'select-none motion-safe:transition-all ease-out': true,
+}
+```
+
+## Hidden Select Element
+
+When `values` is provided, a hidden native `<select>` element is rendered:
+- Maintains form compatibility
+- Handles value synchronization
+- Dispatches native `change` events
+- Hidden with `class="hidden"`
+
+## Example
+
+```tsx
+import { component$, useSignal } from '@builder.io/qwik';
+import { SelectMenu } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  const country = useSignal('us');
+  const language = useSignal('en');
+  
+  return (
+    <form class="space-y-4">
+      <SelectMenu
+        id="country"
+        value={country.value}
+        values={[
+          { name: '🇺🇸 United States', value: 'us' },
+          { name: '🇬🇧 United Kingdom', value: 'uk' },
+          { name: '🇨🇦 Canada', value: 'ca' },
+          { name: '🇦🇺 Australia', value: 'au' },
+        ]}
+        onChange$={(e, el) => {
+          country.value = el.value;
+        }}
+      >
+        Country
+      </SelectMenu>
+      
+      <SelectMenu
+        id="language"
+        value={language.value}
+        align="right"
+        values={[
+          { name: 'English', value: 'en' },
+          { name: 'Spanish', value: 'es' },
+          { name: 'French', value: 'fr' },
+          { name: 'German', value: 'de' },
+        ]}
+        onChange$={(e, el) => {
+          language.value = el.value;
+        }}
+      >
+        Language
+      </SelectMenu>
+      
+      <SelectMenu
+        id="theme"
+        customDropdown
+        values={[
+          { name: 'Light', value: 'light' },
+          { name: 'Dark', value: 'dark' },
+          { name: 'Auto', value: 'auto' },
+        ]}
+      >
+        <div q:slot="dropdown" class="flex items-center gap-2">
+          <span>Theme</span>
+        </div>
+        <div q:slot="extra-buttons">
+          <button type="button" class="lum-btn w-full">Reset to Default</button>
+        </div>
+        Theme
+      </SelectMenu>
+    </form>
+  );
+});
+```
+
+<Note>
+  The component uses the Dropdown component internally for the button with chevron indicator.
+</Note>
+
+<Note>
+  When an option is clicked, the component dispatches a native `change` event on the hidden select element for form compatibility.
+</Note>

@@ -1,0 +1,244 @@
+---
+title: Number Input
+description: A number input with increment/decrement buttons and optional label
+---
+
+The NumberInput component provides an accessible number input with plus/minus buttons. It includes a labeled wrapper version and a raw version for custom layouts.
+
+## Import
+
+```tsx
+import { NumberInput, NumberInputRaw } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+<CodeGroup>
+```tsx With Label
+import { component$, useSignal } from '@builder.io/qwik';
+import { NumberInput } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  const quantity = useSignal(1);
+  
+  return (
+    <NumberInput
+      id="quantity"
+      value={quantity.value}
+      min={1}
+      max={10}
+      onIncrement$={(e, el, input) => {
+        if (input) quantity.value = parseInt(input.value);
+      }}
+      onDecrement$={(e, el, input) => {
+        if (input) quantity.value = parseInt(input.value);
+      }}
+      input
+    >
+      Quantity
+    </NumberInput>
+  );
+});
+```
+
+```tsx Without Input Field
+<NumberInputRaw
+  value={count.value}
+  onIncrement$={() => {
+    count.value++;
+  }}
+  onDecrement$={() => {
+    count.value--;
+  }}
+/>
+```
+
+```tsx Custom Step
+<NumberInput
+  id="price"
+  value={price.value}
+  step={0.5}
+  min={0}
+  max={100}
+  input
+  onIncrement$={(e, el, input) => {
+    if (input) price.value = parseFloat(input.value);
+  }}
+  onDecrement$={(e, el, input) => {
+    if (input) price.value = parseFloat(input.value);
+  }}
+>
+  Price
+</NumberInput>
+```
+</CodeGroup>
+
+## Components
+
+### NumberInput
+
+The standard version with an integrated label.
+
+<ParamField path="id" type="string" required>
+  Required ID for the input element. Used to associate the label with the input.
+</ParamField>
+
+<ParamField path="children" type="JSXChildren">
+  Label text displayed above the input via the Slot component.
+</ParamField>
+
+### NumberInputRaw
+
+The raw version without a label wrapper, for custom layouts.
+
+## Props
+
+Both components accept these props:
+
+<ParamField path="value" type="number" default="0">
+  The current numeric value.
+</ParamField>
+
+<ParamField path="min" type="number">
+  Minimum allowed value. The decrement button is disabled when this value is reached.
+</ParamField>
+
+<ParamField path="max" type="number">
+  Maximum allowed value. The increment button is disabled when this value is reached.
+</ParamField>
+
+<ParamField path="step" type="number" default="1">
+  The amount to increment or decrement by. Supports decimals (e.g., `0.1`, `0.5`).
+</ParamField>
+
+<ParamField path="input" type="boolean" default="false">
+  When true, displays a text input field between the buttons. When false, only shows the increment/decrement buttons.
+</ParamField>
+
+<ParamField path="onIncrement$" type="QRL<(event: PointerEvent, element: HTMLButtonElement, inputElement?: HTMLInputElement) => void>" required>
+  Callback fired when the increment button is clicked.
+  
+  **Parameters:**
+  - `event`: The pointer event
+  - `element`: The increment button element
+  - `inputElement`: The input element (only when `input={true}`)
+</ParamField>
+
+<ParamField path="onDecrement$" type="QRL<(event: PointerEvent, element: HTMLButtonElement, inputElement?: HTMLInputElement) => void>" required>
+  Callback fired when the decrement button is clicked.
+  
+  **Parameters:**
+  - `event`: The pointer event
+  - `element`: The decrement button element  
+  - `inputElement`: The input element (only when `input={true}`)
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for the input element (when `input={true}`).
+  
+  Default classes:
+  - `lum-input`: Base input styling
+  - `text-center`: Centers the text
+  - `rounded-sm`: Small rounded corners
+  - `lum-input-p-1`: Input padding
+</ParamField>
+
+## Button Behavior
+
+### Increment Button
+- Positioned on the right
+- Shows Plus icon (20px)
+- Disabled when `value >= max`
+- When `input={true}`, calls `stepUp()` on the input
+- Rounded on left side only (`rounded-l-sm`)
+
+### Decrement Button  
+- Positioned on the left
+- Shows Minus icon (20px)
+- Disabled when `value <= min`
+- When `input={true}`, calls `stepDown()` on the input
+- Rounded on right side only (`rounded-r-sm`)
+
+## Input Field
+
+When `input={true}`:
+- Type: `number`
+- Hides browser default spinners (WebKit and Firefox)
+- Centered text alignment
+- Positioned between increment/decrement buttons
+- Supports keyboard input with min/max validation
+
+### Hidden Spinners
+
+The component uses custom styles to hide native browser spinners:
+
+```css
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+```
+
+## Example
+
+```tsx
+import { component$, useSignal } from '@builder.io/qwik';
+import { NumberInput } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  const adults = useSignal(2);
+  const children = useSignal(0);
+  
+  return (
+    <div class="space-y-4">
+      <NumberInput
+        id="adults"
+        value={adults.value}
+        min={1}
+        max={10}
+        input
+        onIncrement$={(e, el, input) => {
+          if (input) adults.value = parseInt(input.value);
+        }}
+        onDecrement$={(e, el, input) => {
+          if (input) adults.value = parseInt(input.value);
+        }}
+      >
+        Adults
+      </NumberInput>
+      
+      <NumberInput
+        id="children"
+        value={children.value}
+        min={0}
+        max={10}
+        input
+        onIncrement$={(e, el, input) => {
+          if (input) children.value = parseInt(input.value);
+        }}
+        onDecrement$={(e, el, input) => {
+          if (input) children.value = parseInt(input.value);
+        }}
+      >
+        Children
+      </NumberInput>
+      
+      <div class="mt-4">
+        Total guests: {adults.value + children.value}
+      </div>
+    </div>
+  );
+});
+```
+
+<Note>
+  The component uses `touch-manipulation` CSS to optimize touch interactions on mobile devices.
+</Note>
+
+<Note>
+  Button `aria-label` attributes are set to "Increment" and "Decrement" for accessibility.
+</Note>

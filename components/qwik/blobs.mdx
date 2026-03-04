@@ -1,0 +1,122 @@
+---
+title: Blobs
+description: Animated gradient blob backgrounds with customizable colors and blur effects
+---
+
+The Blobs component creates three animated, overlapping circular gradients that create dynamic background effects. Perfect for adding visual interest to hero sections, cards, or page backgrounds.
+
+## Import
+
+```tsx
+import { Blobs } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+<CodeGroup>
+```tsx Basic Usage
+<div class="relative h-64">
+  <Blobs />
+  <div class="relative z-10">
+    {/* Your content here */}
+  </div>
+</div>
+```
+
+```tsx Custom Colors
+<Blobs color="blue" blur="lg" />
+```
+
+```tsx Custom Color Array
+<Blobs 
+  color={['bg-purple-400', 'bg-pink-500', 'bg-blue-600']} 
+  blur="md"
+/>
+```
+</CodeGroup>
+
+## Props
+
+<ParamField path="color" type="string | [string, string, string]" default="darkgray">
+  Color scheme for the blobs. Can be:
+  - A preset color name (see available colors below)
+  - An array of three custom Tailwind color classes
+  
+  **Available preset colors:**
+  `slate`, `gray`, `darkgray`, `darkergray`, `zinc`, `neutral`, `stone`, `red`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`, `indigo`, `violet`, `purple`, `fuchsia`, `pink`, `rose`
+</ParamField>
+
+<ParamField path="blur" type="'xs' | 'sm' | 'md' | 'lg' | 'xl'" default="xl">
+  Amount of blur applied to the blobs. Options range from `xs` (minimal blur) to `xl` (maximum blur).
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for the container element.
+  
+  Default classes:
+  - `absolute inset-0`: Fills parent container
+  - `animate-in fade-in`: Fade in animation
+  - `anim-duration-[2s]`: 2-second animation duration
+  - `motion-reduce:hidden`: Respects user's motion preferences
+</ParamField>
+
+<ParamField path="style" type="{ [key: string]: string | number }">
+  Inline styles for the container. The component sets `containerType: 'size'` by default for container query support.
+</ParamField>
+
+## Color Presets
+
+Each color preset uses three shades (400, 500, 600) for visual depth:
+
+```tsx
+// Example: 'blue' preset
+['bg-blue-400', 'bg-blue-500', 'bg-blue-600']
+
+// Example: 'purple' preset  
+['bg-purple-400', 'bg-purple-500', 'bg-purple-600']
+```
+
+## Animations
+
+The component randomly selects one of seven animation variants (`animate-blob` through `animate-blob6`) for variety. The three blobs have staggered animation delays:
+- First blob: No delay
+- Second blob: -5s delay
+- Third blob: -10s delay
+
+## Styling Details
+
+- Each blob is `30cqw` (container query width units) in size
+- Blobs are positioned absolutely at `top-0`
+- Default opacity is `20%` for subtle effects
+- Uses `rounded-full` for perfect circles
+- Animation easing: `ease-in-out`
+
+## Example
+
+```tsx
+import { component$ } from '@builder.io/qwik';
+import { Blobs } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  return (
+    <section class="relative min-h-96 overflow-hidden rounded-lg">
+      {/* Animated background */}
+      <Blobs color="violet" blur="xl" />
+      
+      {/* Content layer */}
+      <div class="relative z-10 p-8">
+        <h1 class="text-4xl font-bold">Welcome</h1>
+        <p>Beautiful animated backgrounds</p>
+      </div>
+    </section>
+  );
+});
+```
+
+<Note>
+  The parent container should have `position: relative` and the Blobs component uses `position: absolute` to fill it. Make sure your content has appropriate z-index values to appear above the blobs.
+</Note>
+
+<Note>
+  The animation automatically hides when users have `prefers-reduced-motion` enabled for better accessibility.
+</Note>

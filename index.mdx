@@ -1,97 +1,158 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: Luminescent UI
+description: A modern Tailwind CSS-based UI library with React and Qwik components
+mode: custom
 ---
 
-## Setting up
+<div className="relative min-h-[500px] flex items-center justify-center py-20 overflow-hidden bg-gradient-to-br from-[#0a121f] via-[#141d2c] to-[#0a121f]">
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(29,180,244,0.15),transparent_50%)] pointer-events-none"></div>
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,rgba(173,131,244,0.1),transparent_50%)] pointer-events-none"></div>
+  
+  <div className="relative max-w-6xl mx-auto px-6 text-center z-10">
+    <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-[#1db4f4] via-[#ad83f4] to-[#1db4f4] bg-clip-text text-transparent">
+      Luminescent UI
+    </h1>
+    <p className="text-xl sm:text-2xl text-gray-300 dark:text-gray-300 mb-10 max-w-3xl mx-auto">
+      A modern Tailwind CSS-based UI library with pre-built components for React and Qwik
+    </p>
+    <div className="flex flex-wrap justify-center gap-4">
+      <a 
+        href="/installation" 
+        className="group inline-flex items-center gap-2 px-8 py-4 bg-[#1db4f4] hover:bg-[#1da4e4] text-white font-semibold rounded-xl transition-all duration-200 transform hover:scale-105 no-underline"
+      >
+        Get started
+        <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+        </svg>
+      </a>
+      <a 
+        href="/components/qwik/anchor" 
+        className="group inline-flex items-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 dark:bg-white/10 dark:hover:bg-white/20 text-white border border-white/30 dark:border-white/30 font-semibold rounded-xl transition-all duration-200 no-underline"
+      >
+        View components
+      </a>
+    </div>
+  </div>
+</div>
 
-Get your documentation site up and running in minutes.
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+## Quick start
 
-## Make it yours
+<Steps>
+  <Step title="Install the core package">
+    Install the Luminescent UI library from npm using your preferred package manager.
 
-Design a docs site that looks great and empowers your users.
+    <CodeGroup>
+    ```bash npm
+    npm install @luminescent/ui
+    ```
+    ```bash pnpm
+    pnpm install @luminescent/ui
+    ```
+    ```bash yarn
+    yarn add @luminescent/ui
+    ```
+    </CodeGroup>
+  </Step>
 
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+  <Step title="Add to your Tailwind CSS">
+    Import the Luminescent UI styles and plugin into your main CSS file.
+
+    ```css
+    @import "@luminescent/ui";
+    @plugin "@luminescent/ui/lum-bg";
+    ```
+  </Step>
+
+  <Step title="Start using components">
+    Install framework-specific packages for React or Qwik components.
+
+    <Tabs>
+      <Tab title="Qwik">
+        ```bash
+        pnpm install @luminescent/ui-qwik
+        ```
+
+        Add to your CSS file:
+        ```css
+        @config "@luminescent/ui-qwik/config";
+        @source "../node_modules/@luminescent/ui-qwik";
+        ```
+      </Tab>
+      <Tab title="React">
+        ```bash
+        pnpm install @luminescent/ui-react
+        ```
+
+        Add to your CSS file:
+        ```css
+        @source "../node_modules/@luminescent/ui-react";
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+</Steps>
+
+</div>
+
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Custom CSS utilities" icon="paintbrush" href="/core/css-utilities">
+    Powerful Tailwind utilities for backgrounds, borders, and effects with the `lum-bg-*` system
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="React & Qwik components" icon="cube" href="/components/qwik/anchor">
+    Pre-built interactive components optimized for modern frameworks
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Customizable theming" icon="palette" href="/core/theme-customization">
+    Full control over colors, spacing, and visual style using CSS variables
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Markdown formatting" icon="file-lines" href="/core/markdown-formatting">
+    Beautiful default styles for rendering Markdown content
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+</div>
 
-Everything you need to create world-class documentation.
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+## Explore by framework
 
-## Need inspiration?
+<CardGroup cols={2}>
+  <Card title="Qwik components" icon="bolt" href="/frameworks/qwik">
+    Full suite of components including Anchor, ColorPicker, Dropdown, Nav, NumberInput, RangeInput, SelectMenu, Sidebar, Toggle, and more
+  </Card>
+  <Card title="React components" icon="react" href="/frameworks/react">
+    Essential React components with TypeScript support: Dropdown, Nav, SelectMenu, and Toggle
+  </Card>
+</CardGroup>
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+</div>
+
+<div className="mt-20 mb-16 max-w-5xl mx-auto px-6">
+
+<div className="relative rounded-2xl border border-white/10 dark:border-white/10 bg-gradient-to-br from-[#141d2c]/60 to-[#0a121f]/60 dark:from-[#141d2c]/60 dark:to-[#0a121f]/60 p-10 text-center overflow-hidden">
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(173,131,244,0.1),transparent_70%)] pointer-events-none"></div>
+  <div className="relative z-10">
+    <h2 className="text-3xl font-bold text-white dark:text-white mb-4">
+      Ready to build beautiful interfaces?
+    </h2>
+    <p className="text-lg text-gray-300 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+      Start creating with Luminescent UI's component library and custom utilities
+    </p>
+    <a 
+      href="/installation" 
+      className="inline-flex items-center gap-2 px-8 py-4 bg-[#ad83f4] hover:bg-[#9d73e4] text-white font-semibold rounded-xl transition-all duration-200 transform hover:scale-105 no-underline"
+    >
+      Get started now
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+      </svg>
+    </a>
+  </div>
+</div>
+
+</div>

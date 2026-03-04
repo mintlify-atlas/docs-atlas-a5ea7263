@@ -1,0 +1,214 @@
+---
+title: Logo Components
+description: Pre-built SVG logo components for popular Minecraft-related projects and platforms
+icon: 'image'
+---
+
+## Overview
+
+Luminescent UI includes a collection of optimized SVG logo components for popular Minecraft-related projects and platforms. All logos support customizable sizing and inherit color from the current text color using `fill="currentColor"`.
+
+## Available Logos
+
+<CardGroup cols={2}>
+  <Card title="Birdflop" icon="bird">
+    Custom logo with optional confused state and gradient fill support
+  </Card>
+  <Card title="Discord" icon="discord">
+    Official Discord logo for community links
+  </Card>
+  <Card title="Fabric" icon="cube">
+    Fabric mod loader logo
+  </Card>
+  <Card title="Forge" icon="hammer">
+    Minecraft Forge mod loader logo
+  </Card>
+  <Card title="Luminescent" icon="sparkles">
+    Luminescent UI brand logo (icon and full variants)
+  </Card>
+  <Card title="Paper" icon="scroll">
+    PaperMC server software logo
+  </Card>
+  <Card title="Pterodactyl" icon="server">
+    Pterodactyl game server management panel logo
+  </Card>
+  <Card title="Purpur" icon="gem">
+    Purpur server software logo
+  </Card>
+  <Card title="Velocity" icon="bolt">
+    Velocity proxy software logo
+  </Card>
+  <Card title="Waterfall" icon="water">
+    Waterfall proxy software logo
+  </Card>
+</CardGroup>
+
+## Installation
+
+<CodeGroup>
+```bash npm
+npm install @luminescent/ui-qwik
+```
+```bash pnpm
+pnpm install @luminescent/ui-qwik
+```
+```bash yarn
+yarn add @luminescent/ui-qwik
+```
+</CodeGroup>
+
+## Basic Usage
+
+Import and use logo components like any other Qwik component:
+
+```tsx
+import { LogoPaper, LogoDiscord, LogoLuminescent } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  return (
+    <div class="flex items-center gap-4">
+      <LogoPaper size={32} />
+      <LogoDiscord size={32} />
+      <LogoLuminescent size={32} />
+    </div>
+  );
+});
+```
+
+## IconProps Interface
+
+All logo components extend the `IconProps` interface:
+
+```typescript
+import type { PropsOf } from '@builder.io/qwik';
+
+export type IconProps = Omit<PropsOf<'svg'>, 'height' | 'width'> & {
+  size?: number;
+}
+```
+
+This interface:
+- Accepts all standard SVG attributes except `height` and `width`
+- Provides a `size` prop that sets both width and height
+- Supports class names, styles, event handlers, and other SVG props
+
+## Styling with Color
+
+Logos use `fill="currentColor"` or `stroke="currentColor"`, so they inherit the text color:
+
+```tsx
+<div class="text-blue-500">
+  <LogoPaper size={48} />
+</div>
+
+<div class="text-purple-600">
+  <LogoDiscord size={48} />
+</div>
+```
+
+## Special Logo Features
+
+### LogoBirdflop
+
+The Birdflop logo has additional props for customization:
+
+```tsx
+import { LogoBirdflop } from '@luminescent/ui-qwik';
+
+// Basic usage
+<LogoBirdflop size={64} />
+
+// With confused state
+<LogoBirdflop size={64} confused />
+
+// With gradient fill
+<LogoBirdflop 
+  size={64} 
+  fillGradient={['#1db4f4', '#ad83f4']} 
+/>
+```
+
+**Props:**
+- `confused?: boolean` - Displays a question mark overlay
+- `fillGradient?: string[]` - Array of color stops for a linear gradient
+
+### LogoLuminescent
+
+The Luminescent logo comes in two variants:
+
+```tsx
+import { 
+  LogoLuminescent,      // Icon only
+  LogoLuminescentFull   // Full wordmark
+} from '@luminescent/ui-qwik';
+
+<LogoLuminescent size={48} />
+<LogoLuminescentFull size={48} />
+```
+
+Note: `LogoLuminescentFull` uses `height` instead of `width` for sizing to maintain aspect ratio.
+
+## Complete Logo List
+
+All available logo components:
+
+```tsx
+import {
+  LogoBirdflop,
+  LogoDiscord,
+  LogoFabric,
+  LogoForge,
+  LogoLuminescent,
+  LogoLuminescentFull,
+  LogoPaper,
+  LogoPterodactyl,
+  LogoPurpur,
+  LogoVelocity,
+  LogoWaterfall,
+} from '@luminescent/ui-qwik';
+```
+
+## Example: Logo Grid
+
+```tsx
+import { component$ } from '@builder.io/qwik';
+import {
+  LogoPaper,
+  LogoPurpur,
+  LogoFabric,
+  LogoForge,
+  LogoVelocity,
+  LogoWaterfall,
+} from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  return (
+    <div class="grid grid-cols-3 gap-8 p-8">
+      <div class="flex flex-col items-center gap-2">
+        <LogoPaper size={64} class="text-orange-500" />
+        <span>Paper</span>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <LogoPurpur size={64} class="text-purple-500" />
+        <span>Purpur</span>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <LogoFabric size={64} class="text-brown-500" />
+        <span>Fabric</span>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <LogoForge size={64} class="text-blue-600" />
+        <span>Forge</span>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <LogoVelocity size={64} class="text-cyan-400" />
+        <span>Velocity</span>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <LogoWaterfall size={64} class="text-blue-400" />
+        <span>Waterfall</span>
+      </div>
+    </div>
+  );
+});
+```

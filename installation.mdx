@@ -1,0 +1,249 @@
+---
+title: Installation
+description: Complete guide to installing and configuring Luminescent UI for your project
+---
+
+# Installation Guide
+
+This guide walks you through installing Luminescent UI for different frameworks and use cases.
+
+## Prerequisites
+
+Before installing Luminescent UI, ensure you have:
+
+- Node.js **23.11.0** or higher
+- pnpm **10.10.0** or higher
+- A project with Tailwind CSS v4 configured
+
+<Warning>
+  Luminescent UI **only supports pnpm** as the package manager. npm and yarn are not supported.
+</Warning>
+
+## Core Package Installation
+
+The `@luminescent/ui` package is required for all Luminescent UI projects, regardless of framework.
+
+<Steps>
+  <Step title="Install the package">
+    ```bash
+    pnpm install @luminescent/ui
+    ```
+  </Step>
+  
+  <Step title="Configure Tailwind CSS">
+    Add the following imports to your Tailwind CSS file:
+    
+    ```css
+    @import "@luminescent/ui";
+    @plugin "@luminescent/ui/lum-bg";
+    ```
+    
+    The `@import` loads the core styles, while `@plugin` registers the custom `lum-bg` plugin.
+  </Step>
+  
+  <Step title="Verify installation">
+    Start using Luminescent UI classes in your components. The library is now ready to use!
+  </Step>
+</Steps>
+
+### Optional: Markdown Formatting
+
+Luminescent UI includes optional formatting styles for markdown elements, perfect for blogs and documentation sites.
+
+<Tabs>
+  <Tab title="Installation">
+    Add this import to your Tailwind CSS file **after** the core imports:
+    
+    ```css
+    @import "@luminescent/ui/formatting";
+    ```
+  </Tab>
+  
+  <Tab title="What's Included">
+    The formatting module provides default styling for:
+    - Headings (h1-h6)
+    - Paragraphs and text elements
+    - Lists (ordered and unordered)
+    - Code blocks and inline code
+    - Blockquotes
+    - Tables
+    - And more markdown elements
+  </Tab>
+</Tabs>
+
+<Note>
+  See the [Markdown Documentation](https://ui.luminescent.dev/docs/markdown) for examples of the formatting in action.
+</Note>
+
+## Framework-Specific Installation
+
+### Qwik
+
+Install the Qwik components package for optimized Qwik-specific components.
+
+<Steps>
+  <Step title="Install dependencies">
+    Install both the core package and Qwik package:
+    
+    ```bash
+    pnpm install @luminescent/ui @luminescent/ui-qwik
+    ```
+  </Step>
+  
+  <Step title="Configure Tailwind CSS">
+    Add these imports to your Tailwind CSS file **after** the core imports:
+    
+    ```css
+    @config "@luminescent/ui-qwik/config";
+    @source "../node_modules/@luminescent/ui-qwik";
+    ```
+  </Step>
+  
+  <Step title="Import components">
+    Import and use Qwik components in your application:
+    
+    ```tsx
+    import { component$ } from '@builder.io/qwik';
+    // Import Luminescent UI Qwik components here
+    
+    export default component$(() => {
+      return (
+        <div>
+          {/* Your components here */}
+        </div>
+      );
+    });
+    ```
+  </Step>
+</Steps>
+
+<Note>
+  The Qwik package requires **@luminescent/ui** as a peer dependency and includes TypeScript definitions.
+</Note>
+
+### React
+
+Install the React components package with built-in Lucide icons support.
+
+<Steps>
+  <Step title="Install dependencies">
+    Install both the core package and React package:
+    
+    ```bash
+    pnpm install @luminescent/ui @luminescent/ui-react
+    ```
+  </Step>
+  
+  <Step title="Configure Tailwind CSS">
+    Add this import to your Tailwind CSS file **after** the core imports:
+    
+    ```css
+    @source "../node_modules/@luminescent/ui-react";
+    ```
+  </Step>
+  
+  <Step title="Import components">
+    Import and use React components in your application:
+    
+    ```tsx
+    import React from 'react';
+    // Import Luminescent UI React components here
+    
+    export default function App() {
+      return (
+        <div>
+          {/* Your components here */}
+        </div>
+      );
+    }
+    ```
+  </Step>
+</Steps>
+
+<Note>
+  The React package requires **React 19.2.3+** and includes **lucide-react** icons by default.
+</Note>
+
+## Complete Configuration Examples
+
+<CodeGroup>
+
+```css Tailwind CSS (Core Only)
+@import "@luminescent/ui";
+@plugin "@luminescent/ui/lum-bg";
+```
+
+```css Tailwind CSS (Core + Formatting)
+@import "@luminescent/ui";
+@plugin "@luminescent/ui/lum-bg";
+@import "@luminescent/ui/formatting";
+```
+
+```css Tailwind CSS (Qwik Project)
+@import "@luminescent/ui";
+@plugin "@luminescent/ui/lum-bg";
+@import "@luminescent/ui/formatting";
+@config "@luminescent/ui-qwik/config";
+@source "../node_modules/@luminescent/ui-qwik";
+```
+
+```css Tailwind CSS (React Project)
+@import "@luminescent/ui";
+@plugin "@luminescent/ui/lum-bg";
+@import "@luminescent/ui/formatting";
+@source "../node_modules/@luminescent/ui-react";
+```
+
+</CodeGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Package manager errors">
+    Luminescent UI only supports pnpm. If you see errors about npm or yarn, make sure you're using pnpm:
+    
+    ```bash
+    npm install -g pnpm
+    pnpm --version
+    ```
+  </Accordion>
+  
+  <Accordion title="Node version issues">
+    Ensure you're running Node.js 23.11.0 or higher:
+    
+    ```bash
+    node --version
+    ```
+    
+    Use nvm or another version manager to upgrade if needed.
+  </Accordion>
+  
+  <Accordion title="Tailwind CSS not detecting classes">
+    Make sure:
+    1. You've added the imports in the correct order
+    2. Your Tailwind CSS file is being processed by your build tool
+    3. The `@source` directives point to the correct node_modules path
+  </Accordion>
+  
+  <Accordion title="Peer dependency warnings">
+    Framework packages require `@luminescent/ui` as a peer dependency. Install it alongside:
+    
+    ```bash
+    pnpm install @luminescent/ui @luminescent/ui-react
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={3}>
+  <Card title="Browse Qwik Components" icon="grid" href="/components/qwik/anchor">
+    Explore the Qwik component library
+  </Card>
+  <Card title="Browse React Components" icon="grid" href="/components/react/dropdown">
+    Explore the React component library
+  </Card>
+  <Card title="CSS Utilities" icon="paintbrush" href="/core/css-utilities">
+    Learn about custom CSS utilities
+  </Card>
+</CardGroup>

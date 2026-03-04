@@ -1,0 +1,182 @@
+---
+title: 'Dropdown'
+description: 'A button component with a chevron icon that indicates expandable content'
+icon: 'chevron-down'
+---
+
+## Overview
+
+The Dropdown component is a button that displays a chevron icon to indicate expandable or collapsible content. It supports both controlled open/close states and hover interactions.
+
+## Import
+
+```tsx
+import { Dropdown } from '@luminescent/ui-react';
+```
+
+## Basic Usage
+
+<CodeGroup>
+```tsx Basic
+import { Dropdown } from '@luminescent/ui-react';
+
+export function Example() {
+  return (
+    <Dropdown>
+      Select an option
+    </Dropdown>
+  );
+}
+```
+
+```tsx Controlled State
+import { Dropdown } from '@luminescent/ui-react';
+import { useState } from 'react';
+
+export function Example() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Dropdown 
+      opened={isOpen}
+      onClick={() => setIsOpen(!isOpen)}
+    >
+      Menu
+    </Dropdown>
+  );
+}
+```
+
+```tsx Hover State
+import { Dropdown } from '@luminescent/ui-react';
+
+export function Example() {
+  return (
+    <Dropdown hover>
+      Hover over me
+    </Dropdown>
+  );
+}
+```
+</CodeGroup>
+
+## Props
+
+The Dropdown component extends all standard HTML button attributes and adds the following props:
+
+<ParamField path="children" type="React.ReactNode">
+  The content to display inside the dropdown button.
+</ParamField>
+
+<ParamField path="opened" type="boolean" default="false">
+  Controls whether the chevron icon is rotated (180 degrees when true).
+</ParamField>
+
+<ParamField path="hover" type="boolean" default="false">
+  When enabled, the chevron rotates on hover with a faster transition duration (75ms vs 300ms).
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the button element.
+</ParamField>
+
+## TypeScript Interface
+
+```tsx
+interface DropdownProps
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    'bind:checked' | 'type' | 'children'
+  > {
+  children?: React.ReactNode;
+  hover?: boolean;
+  opened?: boolean;
+}
+```
+
+## Behavior
+
+### Chevron Animation
+
+The chevron icon rotates based on the component state:
+
+- **Default**: No rotation
+- **Opened**: Rotates 180 degrees
+- **Hover** (when `hover` prop is true): Rotates 180 degrees on hover
+- **Focus**: Rotates 180 degrees when focused or contains focused elements
+
+### Transition Timing
+
+- **Default transition**: 300ms ease-out
+- **Hover/focus transition**: 75ms (faster response)
+- **Motion reduction**: Respects `prefers-reduced-motion` user settings
+
+## Styling
+
+The component applies the following base classes:
+
+- `group`: Enables group-based styling for child elements
+- `lum-btn`: Luminescent UI button styles
+- `flex-1 text-left`: Content container styling
+
+### Custom Styling
+
+```tsx
+<Dropdown className="bg-blue-500 hover:bg-blue-600">
+  Custom styled dropdown
+</Dropdown>
+```
+
+## Accessibility
+
+- Renders as a `<button>` element with `type="button"`
+- Supports all standard button attributes (aria-label, aria-expanded, etc.)
+- Respects `prefers-reduced-motion` for animations
+- Focus states trigger chevron rotation
+
+## Examples
+
+### With Click Handler
+
+```tsx
+import { Dropdown } from '@luminescent/ui-react';
+import { useState } from 'react';
+
+export function ClickableDropdown() {
+  const [opened, setOpened] = useState(false);
+
+  return (
+    <div>
+      <Dropdown 
+        opened={opened}
+        onClick={() => setOpened(!opened)}
+      >
+        Click to toggle
+      </Dropdown>
+      {opened && (
+        <div className="mt-2 p-4 border rounded">
+          Dropdown content
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### With Disabled State
+
+```tsx
+import { Dropdown } from '@luminescent/ui-react';
+
+export function DisabledDropdown() {
+  return (
+    <Dropdown disabled>
+      Disabled dropdown
+    </Dropdown>
+  );
+}
+```
+
+## Source Reference
+
+Component source: `packages/ui-react/src/components/elements/Dropdown.tsx`
